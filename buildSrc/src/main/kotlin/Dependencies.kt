@@ -17,6 +17,7 @@ object Versions {
         const val Kotlin = "1.4.32"
         const val Gradle = "7.0.0-alpha15"
         const val CoreKtx = "1.3.2"
+        const val GoogleServices = "4.3.5"
     }
 
     object Ui {
@@ -27,6 +28,10 @@ object Versions {
     object Util {
         const val CrashReporter = "1.1.0"
         const val Gson = "2.8.6"
+    }
+
+    object Firebase {
+        const val Bom = "27.1.0"
     }
 
     object Network {
@@ -45,9 +50,12 @@ object Versions {
 }
 
 object Dependencies {
+    const val firebase = "com.google.firebase:firebase-bom:${Versions.Firebase.Bom}"
+
     val classpath = listOf(
         "com.android.tools.build:gradle:${Versions.Essential.Gradle}",
-        "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Essential.Kotlin}"
+        "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Essential.Kotlin}",
+        "com.google.gms:google-services:${Versions.Essential.GoogleServices}"
     )
 
     val network = listOf(

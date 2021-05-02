@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
     kotlin("android")
     kotlin("kapt")
     id("name.remal.check-dependency-updates") version "1.3.1"
@@ -54,6 +55,8 @@ android {
 }
 
 dependencies {
+    implementation(platform(Dependencies.firebase))
+
     Dependencies.essential.forEach { def -> implementation(def) }
     Dependencies.network.forEach { def -> implementation(def) }
     Dependencies.ui.forEach { def -> implementation(def) }
