@@ -1,5 +1,6 @@
-package you.village.ui.main
+package you.village.ui.main.home
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,38 +34,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.glide.rememberGlidePainter
 import you.village.model.Item
-import you.village.model.User
 import you.village.theme.colors
-import java.util.Date
+import you.village.util.open
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
  */
 
 @Composable
-fun HomeBind() {
-    val items = remember {
-        mutableStateListOf(
-            Item(
-                id = 0,
-                name = "Test",
-                imageUrl = "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcA4Erc%2Fbtq3JS5DxgZ%2Fkbr4PKkYfZkg6KrzKx99H1%2Fimg.png",
-                likeCount = 0,
-                price = 1000000000,
-                rentLength = 0,
-                discountPercentage = 0,
-                owner = User(
-                    id = "test",
-                    name = "SSSSSS",
-                    profileImageUrl = "",
-                    likeItem = listOf(),
-                    wrotePost = listOf(),
-                    uploadItem = listOf()
-                ),
-                uploadDate = Date().time
-            )
-        )
-    }
+fun HomeBind(activity: Activity) {
+    val items = remember { mutableStateListOf<Item>() }
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -86,9 +65,7 @@ fun HomeBind() {
             horizontalAlignment = Alignment.End
         ) {
             FloatingActionButton(
-                onClick = {
-                    items.addAll(items)
-                }
+                onClick = { activity.open(ItemAddActivity(), false) }
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
@@ -111,7 +88,7 @@ private fun ItemBind(item: Item) {
             .padding(top = 8.dp),
     ) {
         Image(
-            painter = rememberGlidePainter(item.imageUrl),
+            painter = rememberGlidePainter(item.imageUrl.first()),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()

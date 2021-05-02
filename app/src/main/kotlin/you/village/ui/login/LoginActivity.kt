@@ -99,12 +99,12 @@ class LoginActivity : ComponentActivity() {
                     ) {
                         RoundedTextField(
                             value = id,
-                            placeholder = "Enter Id:"
+                            placeholder = "Enter Id"
                         )
                         RoundedTextField(
                             value = password,
                             modifier = Modifier.padding(top = 16.dp),
-                            placeholder = "Enter Password:"
+                            placeholder = "Enter Password"
                         )
                         Button(
                             onClick = { /*TODO*/ },

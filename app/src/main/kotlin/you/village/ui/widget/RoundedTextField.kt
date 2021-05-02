@@ -20,15 +20,16 @@ fun RoundedTextField(
     value: MutableState<TextFieldValue>,
     modifier: Modifier = Modifier,
     placeholder: String = "",
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    isSingleLine: Boolean = true,
 ) {
     TextField(
         value = value.value,
         onValueChange = { value.value = it },
-        singleLine = true,
+        singleLine = isSingleLine,
+        maxLines = if (isSingleLine) 1 else Int.MAX_VALUE,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         placeholder = { if (placeholder.isNotBlank()) Text(placeholder) },
-        maxLines = 1,
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
             .border(1.dp, Color.Black, RoundedCornerShape(20.dp)),

@@ -90,12 +90,12 @@ class LocateActivity : ComponentActivity() {
                     }
                 }
             }
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.End
-            ) {
-                if (locatePickState.value != null) {
+            if (locatePickState.value != null) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.End
+                ) {
                     Button(
                         onClick = { locatePickState.value = null },
                         modifier = Modifier.padding(end = 10.dp),
@@ -109,18 +109,18 @@ class LocateActivity : ComponentActivity() {
                             fontFamily = fontResource(font = R.font.righteous)
                         )
                     }
-                }
-                Button(
-                    onClick = { open(MainActivity()) },
-                    shape = RoundedCornerShape(15.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
-                ) {
-                    Text(
-                        text = "Next",
-                        style = typography.button,
-                        color = Color.White,
-                        fontFamily = fontResource(font = R.font.righteous)
-                    )
+                    Button(
+                        onClick = { open(MainActivity()) },
+                        shape = RoundedCornerShape(15.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
+                    ) {
+                        Text(
+                            text = "Next",
+                            style = typography.button,
+                            color = Color.White,
+                            fontFamily = fontResource(font = R.font.righteous)
+                        )
+                    }
                 }
             }
         }

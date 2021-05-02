@@ -18,8 +18,8 @@ fun doDelay(ms: Long, action: () -> Unit) {
     )
 }
 
-inline fun <reified T> Activity.open(activity: T) {
-    finish()
+inline fun <reified T> Activity.open(activity: T, isActivityFinish: Boolean = true) {
+    if (isActivityFinish) finish()
     startActivity(Intent(this, activity!!::class.java))
 }
 

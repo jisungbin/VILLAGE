@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Category
@@ -25,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import you.village.theme.MaterialBind
 import you.village.theme.colors
+import you.village.ui.main.home.HomeBind
 import you.village.ui.main.model.Main
 import you.village.ui.widget.fancybottombar.FancyBottomBar
 import you.village.ui.widget.fancybottombar.FancyColors
@@ -63,7 +62,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 Crossfade(mainState) { state ->
                     when (state) {
-                        Main.Home -> HomeBind()
+                        Main.Home -> HomeBind(this@MainActivity)
                         Main.Category -> CategoryBind()
                         Main.Notification -> NotificationBind()
                         Main.Profile -> ProfileBind()
