@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import you.village.R
 import you.village.theme.MaterialBind
 import you.village.theme.typography
-import you.village.ui.widget.HeightSpace
+import you.village.ui.widget.VerticalSpace
 import you.village.ui.widget.RoundedTextField
 import you.village.util.fontResource
 import you.village.util.open
@@ -79,7 +79,7 @@ class RegisterActivity : ComponentActivity() {
                         modifier = Modifier.padding(start = 15.dp)
                     )
                 }
-                HeightSpace(30.dp)
+                VerticalSpace(30.dp)
                 TextField(label = "이름", value = nameField)
                 TextField(label = "아이디", value = idField)
                 TextField(

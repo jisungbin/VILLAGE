@@ -34,7 +34,7 @@ import you.village.R
 import you.village.theme.MaterialBind
 import you.village.theme.typography
 import you.village.ui.login.locate.LocateActivity
-import you.village.ui.widget.HeightSpace
+import you.village.ui.widget.VerticalSpace
 import you.village.ui.widget.RoundedTextField
 import you.village.util.fontResource
 import you.village.util.open
@@ -77,9 +77,9 @@ class PhoneNumberVerifyActivity : ComponentActivity() {
                         modifier = Modifier.padding(start = 15.dp)
                     )
                 }
-                HeightSpace(30.dp)
+                VerticalSpace(30.dp)
                 Text(text = "핸드폰 번호 입력")
-                HeightSpace(8.dp)
+                VerticalSpace(8.dp)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -102,9 +102,9 @@ class PhoneNumberVerifyActivity : ComponentActivity() {
                         )
                     }
                 }
-                HeightSpace(30.dp)
+                VerticalSpace(30.dp)
                 Text(text = "인증번호 입력")
-                HeightSpace(8.dp)
+                VerticalSpace(8.dp)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
