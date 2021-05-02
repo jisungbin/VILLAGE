@@ -94,7 +94,6 @@ class RegisterActivity : ComponentActivity() {
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .width(200.dp)
-                    .height(100.dp)
             )
         }
     }

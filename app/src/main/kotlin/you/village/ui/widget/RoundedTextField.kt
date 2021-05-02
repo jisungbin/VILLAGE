@@ -19,19 +19,17 @@ import androidx.compose.ui.unit.dp
 fun RoundedTextField(
     value: MutableState<TextFieldValue>,
     modifier: Modifier = Modifier,
-    placeholder: String = "",
-    cornerRadius: Dp = 20.dp,
+    placeholder: String = ""
 ) {
     TextField(
         value = value.value,
         onValueChange = { value.value = it },
-
         singleLine = true,
         placeholder = { if (placeholder.isNotBlank()) Text(placeholder) },
         maxLines = 1,
         modifier = modifier
-            .clip(RoundedCornerShape(cornerRadius))
-            .border(1.dp, Color.Black, RoundedCornerShape(cornerRadius)),
+            .clip(RoundedCornerShape(20.dp))
+            .border(1.dp, Color.Black, RoundedCornerShape(20.dp)),
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
