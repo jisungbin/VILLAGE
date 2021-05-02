@@ -2,6 +2,7 @@ package you.village.ui.widget
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -10,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 
@@ -17,12 +19,14 @@ import androidx.compose.ui.unit.dp
 fun RoundedTextField(
     value: MutableState<TextFieldValue>,
     modifier: Modifier = Modifier,
-    placeholder: String = ""
+    placeholder: String = "",
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     TextField(
         value = value.value,
         onValueChange = { value.value = it },
         singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         placeholder = { if (placeholder.isNotBlank()) Text(placeholder) },
         maxLines = 1,
         modifier = modifier

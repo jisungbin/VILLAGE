@@ -24,7 +24,7 @@
 
         <activity android:name=".ui.login.RegisterActivity" />
         <activity android:name=".ui.login.PhoneNumberVerifyActivity" />
-        <activity android:name=".ui.login.LocateActivity" />
+        <activity android:name=".ui.login.locate.LocateActivity" />
 
         <meta-data
             android:name="com.samsung.android.icon_container.has_icon_container"
