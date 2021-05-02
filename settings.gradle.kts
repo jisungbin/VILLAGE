@@ -1,2 +1,2 @@
-rootProject.name = "Dibs"
+rootProject.name = "VILLAGE"
 include(":app")

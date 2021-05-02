@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import you.village.theme.MaterialBind
 
-
 /**
  * Created by SungBin on 2021-05-02.
  */
@@ -16,7 +15,6 @@ class PhoneNumberVerifyActivity : ComponentActivity() {
 
         setContent {
             MaterialBind {
-
             }
         }
     }

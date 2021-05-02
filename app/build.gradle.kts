@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Application.compileSdk)
+    compileSdk = Application.compileSdk
 
     defaultConfig {
-        minSdkVersion(Application.minSdk)
-        targetSdkVersion(Application.targetSdk)
+        minSdk = Application.minSdk
+        targetSdk = Application.targetSdk
         versionCode = Application.versionCode
         versionName = Application.versionName
         multiDexEnabled = true
