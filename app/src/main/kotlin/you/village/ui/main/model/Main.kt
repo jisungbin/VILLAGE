@@ -1,4 +1,4 @@
-package you.village.ui.main
+package you.village.ui.main.model
 
 sealed class Main {
     object Category : Main()

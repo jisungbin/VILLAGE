@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import you.village.theme.MaterialBind
 import you.village.theme.colors
+import you.village.ui.main.model.Main
 import you.village.ui.widget.fancybottombar.FancyBottomBar
 import you.village.ui.widget.fancybottombar.FancyColors
 import you.village.ui.widget.fancybottombar.FancyItem
