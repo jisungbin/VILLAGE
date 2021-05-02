@@ -6,9 +6,9 @@ package you.village.model
 
 data class User(
     val id: String,
-    val name: String,
-    val profileImageUrl: String,
-    val likeItem: List<Int>,
-    val wrotePost: List<Int>,
-    val uploadItem: List<Int>,
+    var name: String,
+    var profileImageUrl: String,
+    var likeItem: List<Int>,
+    var wrotePost: List<Int>,
+    var uploadItem: List<Int>,
 )

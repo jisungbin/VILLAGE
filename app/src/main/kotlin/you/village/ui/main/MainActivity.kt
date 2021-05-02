@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,15 +65,14 @@ class MainActivity : ComponentActivity() {
                     when (state) {
                         Main.Home -> HomeBind()
                         Main.Category -> CategoryBind()
-                        Main.Notification -> TODO()
+                        Main.Notification -> NotificationBind()
                         Main.Profile -> ProfileBind()
                     }
                 }
             }
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom
             ) {
                 FancyBottomBar(
                     items = fancyItems,

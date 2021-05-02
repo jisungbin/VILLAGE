@@ -6,11 +6,12 @@ package you.village.model
 
 data class Item(
     val id: Int,
-    val name: String,
-    val likeCount: Int,
-    val price: Int, // 1회 대여값
-    val rentLength: Int, // 1회 대여 개월
-    val discountPercentage: Int,
+    var name: String,
+    var imageUrl: String,
+    var likeCount: Int,
+    var price: Int, // 1회 대여값
+    var rentLength: Int, // 1회 대여 개월
+    var discountPercentage: Int,
     val owner: User,
     val uploadDate: Long,
 )
