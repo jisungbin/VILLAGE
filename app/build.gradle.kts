@@ -56,7 +56,6 @@ android {
 
 dependencies {
     implementation(platform(Dependencies.FirebaseBom))
-    implementation(files("libs/libDaumMapAndroid.jar"))
 
     Dependencies.Google.forEach { def -> implementation(def) }
     Dependencies.Firebase.forEach { def -> implementation(def) }

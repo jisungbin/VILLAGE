@@ -1,10 +1,6 @@
 package you.village.ui.login.locate
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -39,11 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import net.daum.mf.map.api.MapView
+import com.google.android.gms.maps.MapView
 import you.village.R
 import you.village.model.User
 import you.village.theme.MaterialBind
@@ -79,7 +72,6 @@ class LocateActivity : BaseActivity() {
 
         Util.checkGpsService(this)
         Util.requestGpsPermission(this)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         intent.run {
             name = getStringExtra("name")!!
@@ -87,25 +79,6 @@ class LocateActivity : BaseActivity() {
             password = getStringExtra("password")!!
             email = getStringExtra("email")!!
             phoneNumber = getStringExtra("phone")!!
-        }
-
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.i("lastLocation", "working")
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    val latitude = location?.latitude
-                    val longitude = location?.longitude
-
-                    Log.i("latitude", latitude.toString())
-                    Log.i("longitude", longitude.toString())
-                }
         }
 
         setContent {
@@ -315,70 +288,11 @@ class LocateActivity : BaseActivity() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AndroidView(
-                    factory = { map },
-                    modifier = Modifier.size(250.dp)
-                ) {
-                    /* var longitude: Double
-                     var latitude: Double
- 
-                     val locationListener = object : LocationListener {
-                         override fun onLocationChanged(location: Location) {
-                             latitude = location.latitude
-                             longitude = location.longitude
- 
-                             Log.i("latitude", latitude.toString())
-                             Log.i("longitude", longitude.toString())
- 
-                             map.setMapCenterPoint(
-                                 MapPoint.mapPointWithCONGCoord(
-                                     latitude,
-                                     longitude
-                                 ),
-                                 true
-                             )
- 
-                             val geoCoder = Geocoder(applicationContext, Locale.KOREA)
-                             val address =
-                                 geoCoder.getFromLocation(latitude, longitude, 1).first()
-                                     .getAddressLine(0)
-                             Log.i("address", address)
-                         }
- 
-                         override fun onStatusChanged(
-                             provider: String?,
-                             status: Int,
-                             extras: Bundle?,
-                         ) {
-                             Log.i("AA", "1")
-                         }
- 
-                         override fun onProviderEnabled(provider: String) {
-                             Log.i("AA", "2")
-                         }
-                         override fun onProviderDisabled(provider: String) {
-                             Log.i("AA", "3")
-                         }
-                     }
-                     if (ActivityCompat.checkSelfPermission(
-                             this@LocateActivity,
-                             Manifest.permission.ACCESS_FINE_LOCATION
-                         ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                                 this@LocateActivity,
-                                 Manifest.permission.ACCESS_COARSE_LOCATION
-                             ) == PackageManager.PERMISSION_GRANTED
-                     ) {
-                         val locationProvider = LocationManager.GPS_PROVIDER
-                         val lastKnownLocation =
-                             locationManager.getLastKnownLocation(locationProvider)
-                         Log.i("AAA", "AAAA")
-                         if (lastKnownLocation != null) {
-                             val lng = lastKnownLocation.latitude
-                             val lat = lastKnownLocation.latitude
-                             Log.d("Main", "longtitude=$lng, latitude=$lat")
-                         }
-                     }*/
-                }
+                Spacer(
+                    modifier = Modifier
+                        .size(250.dp)
+                        .background(Color.Cyan)
+                )
             }
         }
     }

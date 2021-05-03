@@ -34,6 +34,7 @@ object Versions {
 
     object Google {
         const val Location = "18.0.0"
+        const val Map = "17.0.0"
     }
 
     object Firebase {
@@ -76,7 +77,10 @@ object Dependencies {
         "com.squareup.retrofit2:retrofit:${Versions.Network.Retrofit}"
     )
 
-    val Google = listOf("com.google.android.gms:play-services-location:${Versions.Google.Location}")
+    val Google = listOf(
+        "com.google.android.gms:play-services-location:${Versions.Google.Location}",
+        "com.google.android.gms:play-services-maps:${Versions.Google.Map}"
+    )
 
     val Essential = listOf(
         "androidx.core:core-ktx:${Versions.Essential.CoreKtx}",
