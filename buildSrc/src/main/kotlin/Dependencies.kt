@@ -62,7 +62,8 @@ object Dependencies {
     val Firebase = listOf(
         "com.google.firebase:firebase-firestore-ktx",
         "com.google.firebase:firebase-auth-ktx",
-        "com.google.firebase:firebase-storage-ktx"
+        "com.google.firebase:firebase-storage-ktx",
+        "com.google.firebase:firebase-database-ktx"
     )
 
     val Classpath = listOf(

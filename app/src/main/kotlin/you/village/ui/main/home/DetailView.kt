@@ -43,6 +43,8 @@ import you.village.theme.SystemUiController
 import you.village.theme.colors
 import you.village.theme.typography
 import you.village.ui.BaseActivity
+import you.village.ui.chat.ChatActivity
+import you.village.util.open
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
@@ -191,7 +193,10 @@ class DetailView : BaseActivity() {
                         verticalAlignment = Alignment.Bottom
                     ) {
                         OutlinedButton(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                vm.target = vm.item.owner
+                                open(ChatActivity())
+                            },
                             shape = RoundedCornerShape(15.dp),
                             modifier = Modifier
                                 .weight(1f)

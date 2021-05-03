@@ -55,6 +55,10 @@
             android:name=".ui.main.home.DetailView"
             android:windowSoftInputMode="adjustResize"/>
 
+        <activity
+            android:name=".ui.chat.ChatActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
         <meta-data
             android:name="com.samsung.android.icon_container.has_icon_container"
             android:value="true" />

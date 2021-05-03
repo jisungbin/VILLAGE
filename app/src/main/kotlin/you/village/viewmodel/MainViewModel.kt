@@ -11,6 +11,7 @@ import you.village.model.User
 class MainViewModel private constructor() : ViewModel() {
     lateinit var me: User
     lateinit var item: Item
+    lateinit var target: User
 
     companion object {
         private lateinit var vm: MainViewModel
