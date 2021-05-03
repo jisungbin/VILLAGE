@@ -55,13 +55,14 @@ android {
 }
 
 dependencies {
-    implementation(platform(Dependencies.firebase))
+    implementation(platform(Dependencies.FirebaseBom))
 
-    Dependencies.essential.forEach { def -> implementation(def) }
-    Dependencies.network.forEach { def -> implementation(def) }
-    Dependencies.ui.forEach { def -> implementation(def) }
-    Dependencies.util.forEach { def -> implementation(def) }
-    Dependencies.compose.forEach { def -> implementation(def) }
-    Dependencies.room.forEach { def -> implementation(def) }
-    Dependencies.compiler.forEach { def -> kapt(def) }
+    Dependencies.Firebase.forEach { def -> implementation(def) }
+    Dependencies.Essential.forEach { def -> implementation(def) }
+    Dependencies.Network.forEach { def -> implementation(def) }
+    Dependencies.Ui.forEach { def -> implementation(def) }
+    Dependencies.Util.forEach { def -> implementation(def) }
+    Dependencies.Compose.forEach { def -> implementation(def) }
+    Dependencies.Room.forEach { def -> implementation(def) }
+    Dependencies.Compiler.forEach { def -> kapt(def) }
 }

@@ -1,5 +1,6 @@
 package you.village.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,10 +34,10 @@ import androidx.compose.ui.unit.sp
 import you.village.R
 import you.village.theme.MaterialBind
 import you.village.theme.typography
-import you.village.ui.widget.VerticalSpace
 import you.village.ui.widget.RoundedTextField
+import you.village.ui.widget.VerticalSpace
 import you.village.util.fontResource
-import you.village.util.open
+import you.village.util.toast
 
 /**
  * Created by SungBin on 2021-05-02.
@@ -95,7 +96,31 @@ class RegisterActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.End
             ) {
                 Button(
-                    onClick = { open(PhoneNumberVerifyActivity()) },
+                    onClick = {
+                        val name = nameField.value.text
+                        val id = idField.value.text
+                        val password = passwordField.value.text
+                        val email = "${mainEmailField.value.text}@${subEmailField.value.text}"
+
+                        if (
+                            name.isNotBlank() && id.isNotBlank() &&
+                            password.isNotBlank() && mainEmailField.value.text.isNotBlank() &&
+                            subEmailField.value.text.isNotBlank()
+                        ) {
+                            val intent = Intent(
+                                this@RegisterActivity,
+                                PhoneNumberVerifyActivity::class.java
+                            ).apply {
+                                putExtra("name", name)
+                                putExtra("id", id)
+                                putExtra("password", password)
+                                putExtra("email", email)
+                            }
+                            startActivity(intent)
+                        } else {
+                            toast("모두 입력해 주세요.")
+                        }
+                    },
                     modifier = Modifier.padding(top = 16.dp),
                     shape = RoundedCornerShape(15.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
@@ -115,7 +140,7 @@ class RegisterActivity : ComponentActivity() {
     private fun TextField(
         label: String,
         value: MutableState<TextFieldValue>,
-        keyboardType: KeyboardType = KeyboardType.Text
+        keyboardType: KeyboardType = KeyboardType.Text,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

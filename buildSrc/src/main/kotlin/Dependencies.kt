@@ -50,42 +50,47 @@ object Versions {
 }
 
 object Dependencies {
-    const val firebase = "com.google.firebase:firebase-bom:${Versions.Firebase.Bom}"
+    const val FirebaseBom = "com.google.firebase:firebase-bom:${Versions.Firebase.Bom}"
 
-    val classpath = listOf(
+    val Firebase = listOf(
+        "com.google.firebase:firebase-firestore-ktx",
+        "com.google.firebase:firebase-auth-ktx"
+    )
+
+    val Classpath = listOf(
         "com.android.tools.build:gradle:${Versions.Essential.Gradle}",
         "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Essential.Kotlin}",
         "com.google.gms:google-services:${Versions.Essential.GoogleServices}"
     )
 
-    val network = listOf(
+    val Network = listOf(
         "com.squareup.okhttp3:okhttp:${Versions.Network.OkHttp}",
         "com.squareup.okhttp3:logging-interceptor:${Versions.Network.OkHttp}",
         "com.squareup.retrofit2:retrofit:${Versions.Network.Retrofit}"
     )
 
-    val essential = listOf(
+    val Essential = listOf(
         "androidx.core:core-ktx:${Versions.Essential.CoreKtx}",
         "org.jetbrains.kotlin:kotlin-stdlib:${Versions.Essential.Kotlin}"
     )
 
-    val ui = listOf(
+    val Ui = listOf(
         "com.google.accompanist:accompanist-glide:${Versions.Ui.Glide}",
         "com.airbnb.android:lottie-compose:${Versions.Ui.Lottie}"
     )
 
-    val util = listOf(
+    val Util = listOf(
         "com.balsikandar.android:crashreporter:${Versions.Util.CrashReporter}",
         "com.squareup.retrofit2:converter-gson:${Versions.Network.Retrofit}",
         "com.google.code.gson:gson:${Versions.Util.Gson}"
     )
 
-    var room = listOf(
+    var Room = listOf(
         "androidx.room:room-runtime:${Versions.Jetpack.Room}",
         "androidx.room:room-ktx:${Versions.Jetpack.Room}"
     )
 
-    var compose = listOf(
+    var Compose = listOf(
         "androidx.activity:activity-compose:${Versions.Compose.Activity}",
         "androidx.compose.runtime:runtime-livedata:${Versions.Compose.Version}",
         "androidx.compose.ui:ui:${Versions.Compose.Version}",
@@ -94,7 +99,7 @@ object Dependencies {
         "androidx.compose.ui:ui-tooling:${Versions.Compose.Version}"
     )
 
-    val compiler = listOf(
+    val Compiler = listOf(
         "androidx.room:room-compiler:${Versions.Jetpack.Room}"
     )
 }

@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
 
-    dependencies { Dependencies.classpath.forEach { def -> classpath(def) } }
+    dependencies { Dependencies.Classpath.forEach { def -> classpath(def) } }
 }
 
 allprojects {

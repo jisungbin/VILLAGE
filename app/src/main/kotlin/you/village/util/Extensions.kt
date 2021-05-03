@@ -1,9 +1,14 @@
 package you.village.util
 
+/**
+ * Created by Ji Sungbin on 2021/05/03.
+ */
+
 import android.app.Activity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.annotation.FontRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.Font
@@ -25,3 +30,7 @@ inline fun <reified T> Activity.open(activity: T, isActivityFinish: Boolean = tr
 
 @Composable
 fun fontResource(@FontRes font: Int) = FontFamily(Font(font))
+
+fun Activity.toast(message: String, length: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(applicationContext, message, length).show()
+}

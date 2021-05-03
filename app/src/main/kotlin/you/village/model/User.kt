@@ -6,7 +6,9 @@ package you.village.model
 
 data class User(
     val id: String,
+    var password: String,
     var name: String,
+    var phoneNumber: Long,
     var locate: String,
     var profileImageUrl: String,
     var likeItem: List<Int>,

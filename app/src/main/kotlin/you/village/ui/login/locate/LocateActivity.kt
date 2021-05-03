@@ -1,7 +1,6 @@
 package you.village.ui.login.locate
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -38,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import you.village.R
 import you.village.theme.MaterialBind
 import you.village.theme.typography
+import you.village.ui.BaseActivity
 import you.village.ui.main.MainActivity
 import you.village.ui.widget.RoundedTextField
 import you.village.ui.widget.VerticalSpace
@@ -48,9 +48,24 @@ import you.village.util.open
  * Created by SungBin on 2021-05-02.
  */
 
-class LocateActivity : ComponentActivity() {
+class LocateActivity : BaseActivity() {
+
+    private lateinit var name: String
+    private lateinit var id: String
+    private lateinit var password: String
+    private lateinit var email: String
+    private lateinit var phone: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        intent.run {
+            name = getStringExtra("name")!!
+            id = getStringExtra("id")!!
+            password = getStringExtra("password")!!
+            email = getStringExtra("email")!!
+            phone = getStringExtra("phone")!!
+        }
 
         setContent {
             MaterialBind {

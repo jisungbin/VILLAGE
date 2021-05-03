@@ -1,7 +1,6 @@
 package you.village.ui.login
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -31,19 +30,24 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import you.village.R
+import you.village.model.User
 import you.village.theme.MaterialBind
 import you.village.theme.typography
+import you.village.ui.BaseActivity
+import you.village.ui.main.MainActivity
 import you.village.ui.widget.RoundedTextField
+import you.village.util.EncryptUtil
 import you.village.util.doDelay
 import you.village.util.fontResource
 import you.village.util.open
+import you.village.util.toast
 
 /**
  * Created by SungBin on 2021-05-02.
  */
 
 @ExperimentalAnimationApi
-class LoginActivity : ComponentActivity() {
+class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,8 +61,8 @@ class LoginActivity : ComponentActivity() {
     @Composable
     private fun MainBind() {
         var showLoginArea by remember { mutableStateOf(false) }
-        val id = remember { mutableStateOf(TextFieldValue()) }
-        val password = remember { mutableStateOf(TextFieldValue()) }
+        val idField = remember { mutableStateOf(TextFieldValue()) }
+        val passwordField = remember { mutableStateOf(TextFieldValue()) }
 
         doDelay(2000) { showLoginArea = true }
 
@@ -98,16 +102,16 @@ class LoginActivity : ComponentActivity() {
                         modifier = Modifier.padding(top = 50.dp)
                     ) {
                         RoundedTextField(
-                            value = id,
+                            value = idField,
                             placeholder = "Enter Id"
                         )
                         RoundedTextField(
-                            value = password,
+                            value = passwordField,
                             modifier = Modifier.padding(top = 16.dp),
                             placeholder = "Enter Password"
                         )
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = { login(idField.value.text, passwordField.value.text) },
                             modifier = Modifier.padding(top = 16.dp),
                             shape = RoundedCornerShape(15.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
@@ -122,13 +126,32 @@ class LoginActivity : ComponentActivity() {
                         Text(
                             text = "회원가입하기",
                             fontSize = 13.sp,
-                            modifier = Modifier.padding(top = 8.dp).clickable {
-                                open(RegisterActivity())
-                            }
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .clickable {
+                                    open(RegisterActivity())
+                                }
                         )
                     }
                 }
             }
         }
+    }
+
+    private fun login(id: String, password: String) {
+        firestore
+            .collection("users")
+            .document(id)
+            .get()
+            .addOnSuccessListener { user ->
+                user.toObject(User::class.java)?.run {
+                    if (password == EncryptUtil.encrypt(message = password)) {
+                        open(MainActivity())
+                        toast("${name}님, 환영합니다 :)")
+                    } else {
+                        toast("비밀번호가 일치하지 않습니다.")
+                    }
+                } ?: toast("아이디가 존재하지 않습니다.")
+            }
     }
 }
