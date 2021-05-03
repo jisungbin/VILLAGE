@@ -23,6 +23,8 @@ object Versions {
     object Ui {
         const val Lottie = "1.0.0-alpha07-SNAPSHOT"
         const val Glide = "0.8.1"
+        const val ImagePicker = "1.4.3"
+        const val SwipeRefresh = "0.8.1"
     }
 
     object Util {
@@ -31,7 +33,7 @@ object Versions {
     }
 
     object Google {
-        const val Maps = "17.0.0'"
+        const val Location = "18.0.0"
     }
 
     object Firebase {
@@ -58,7 +60,8 @@ object Dependencies {
 
     val Firebase = listOf(
         "com.google.firebase:firebase-firestore-ktx",
-        "com.google.firebase:firebase-auth-ktx"
+        "com.google.firebase:firebase-auth-ktx",
+        "com.google.firebase:firebase-storage-ktx"
     )
 
     val Classpath = listOf(
@@ -73,7 +76,7 @@ object Dependencies {
         "com.squareup.retrofit2:retrofit:${Versions.Network.Retrofit}"
     )
 
-    val Google = listOf("com.google.android.gms:play-services-maps:${Versions.Google.Maps}")
+    val Google = listOf("com.google.android.gms:play-services-location:${Versions.Google.Location}")
 
     val Essential = listOf(
         "androidx.core:core-ktx:${Versions.Essential.CoreKtx}",
@@ -82,7 +85,9 @@ object Dependencies {
 
     val Ui = listOf(
         "com.google.accompanist:accompanist-glide:${Versions.Ui.Glide}",
-        "com.airbnb.android:lottie-compose:${Versions.Ui.Lottie}"
+        "com.airbnb.android:lottie-compose:${Versions.Ui.Lottie}",
+        "com.github.nguyenhoanglam:ImagePicker:${Versions.Ui.ImagePicker}",
+        "com.google.accompanist:accompanist-swiperefresh:${Versions.Ui.SwipeRefresh}"
     )
 
     val Util = listOf(

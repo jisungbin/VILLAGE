@@ -78,7 +78,7 @@ class PhoneNumberVerifyActivity : BaseActivity() {
 
     @Composable
     private fun VerifyBind() {
-        var isCodeVerified = true
+        var isCodeVerified = false
         var codeVerifyId = ""
         val phoneNumberField = remember { mutableStateOf(TextFieldValue()) }
         val verifyCodeField = remember { mutableStateOf(TextFieldValue()) }
@@ -217,6 +217,7 @@ class PhoneNumberVerifyActivity : BaseActivity() {
                                     putExtra("phone", phoneNumber)
                                 }
                                 startActivity(intent)
+                                finish()
                             } else {
                                 toast("모두 입력해 주세요.")
                             }

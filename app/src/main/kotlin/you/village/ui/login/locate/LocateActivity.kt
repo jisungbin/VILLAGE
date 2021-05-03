@@ -1,11 +1,10 @@
 package you.village.ui.login.locate
 
-import android.content.Context
-import android.location.Geocoder
+import android.Manifest
+import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -20,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -42,18 +40,23 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import net.daum.mf.map.api.MapView
 import you.village.R
+import you.village.model.User
 import you.village.theme.MaterialBind
 import you.village.theme.typography
 import you.village.ui.BaseActivity
 import you.village.ui.main.MainActivity
 import you.village.ui.widget.RoundedTextField
 import you.village.ui.widget.VerticalSpace
+import you.village.util.EncryptUtil
 import you.village.util.Util
 import you.village.util.fontResource
 import you.village.util.open
-import java.util.Locale
+import you.village.util.toast
 
 /**
  * Created by SungBin on 2021-05-02.
@@ -65,21 +68,44 @@ class LocateActivity : BaseActivity() {
     private lateinit var id: String
     private lateinit var password: String
     private lateinit var email: String
-    private lateinit var phone: String
+    private lateinit var phoneNumber: String
+    private val zipCodeField = mutableStateOf(TextFieldValue())
+    private val addressField = mutableStateOf(TextFieldValue())
 
-    private val locationManager by lazy {
-        getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    }
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Util.checkGpsService(this)
+        Util.requestGpsPermission(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         intent.run {
             name = getStringExtra("name")!!
             id = getStringExtra("id")!!
             password = getStringExtra("password")!!
             email = getStringExtra("email")!!
-            phone = getStringExtra("phone")!!
+            phoneNumber = getStringExtra("phone")!!
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.i("lastLocation", "working")
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    val latitude = location?.latitude
+                    val longitude = location?.longitude
+
+                    Log.i("latitude", latitude.toString())
+                    Log.i("longitude", longitude.toString())
+                }
         }
 
         setContent {
@@ -140,12 +166,31 @@ class LocateActivity : BaseActivity() {
                         )
                     }
                     Button(
-                        onClick = { open(MainActivity()) },
+                        onClick = {
+                            val user = User(
+                                id = id,
+                                password = EncryptUtil.encrypt(message = password),
+                                name = name,
+                                phoneNumber = phoneNumber.toLong(),
+                                locate = "${addressField.value.text} (우편: ${zipCodeField.value.text})",
+                                profileImageUrl = "",
+                                likeItem = listOf(),
+                                wrotePost = listOf(),
+                                uploadItem = listOf()
+                            )
+                            firestore
+                                .collection("users")
+                                .document(id)
+                                .set(user)
+                            toast("환영합니다!")
+                            open(MainActivity())
+                            vm.me = user
+                        },
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
                     ) {
                         Text(
-                            text = "Next",
+                            text = "Done",
                             style = typography.button,
                             color = Color.White,
                             fontFamily = fontResource(font = R.font.righteous)
@@ -198,9 +243,6 @@ class LocateActivity : BaseActivity() {
 
     @Composable
     private fun LocateInputBind() {
-        val zipCodeField = remember { mutableStateOf(TextFieldValue()) }
-        val addressField = remember { mutableStateOf(TextFieldValue()) }
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -262,8 +304,6 @@ class LocateActivity : BaseActivity() {
     private fun LocateMapBind() {
         val context = LocalContext.current
         val map = remember { MapView(context) }
-        Util.checkGpsService(this@LocateActivity)
-        Util.requestGpsPermission(this@LocateActivity)
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -271,48 +311,74 @@ class LocateActivity : BaseActivity() {
         ) {
             Text("지도로 선택하기")
             Column(
-                modifier = Modifier
-                    .width(250.dp)
-                    .wrapContentHeight(),
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 AndroidView(
                     factory = { map },
                     modifier = Modifier.size(250.dp)
                 ) {
-                    var longitude: Double
-                    var latitude: Double
-
-                    val locationListener = object : LocationListener {
-                        override fun onLocationChanged(location: Location) {
-                            longitude = location.longitude
-                            latitude = location.latitude
-
-                            val geoCoder = Geocoder(applicationContext, Locale.KOREA())
-                            val address =
-                                geoCoder.getFromLocation(latitude, longitude, 1).first()
-                                    .getAddressLine(0)
-                        }
-
-                        override fun onStatusChanged(
-                            provider: String?,
-                            status: Int,
-                            extras: Bundle?,
-                        ) {
-                        }
-
-                        override fun onProviderEnabled(provider: String) {}
-                        override fun onProviderDisabled(provider: String) {}
-                    }
-                    locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        1000,
-                        1f,
-                        locationListener
-                    )
+                    /* var longitude: Double
+                     var latitude: Double
+ 
+                     val locationListener = object : LocationListener {
+                         override fun onLocationChanged(location: Location) {
+                             latitude = location.latitude
+                             longitude = location.longitude
+ 
+                             Log.i("latitude", latitude.toString())
+                             Log.i("longitude", longitude.toString())
+ 
+                             map.setMapCenterPoint(
+                                 MapPoint.mapPointWithCONGCoord(
+                                     latitude,
+                                     longitude
+                                 ),
+                                 true
+                             )
+ 
+                             val geoCoder = Geocoder(applicationContext, Locale.KOREA)
+                             val address =
+                                 geoCoder.getFromLocation(latitude, longitude, 1).first()
+                                     .getAddressLine(0)
+                             Log.i("address", address)
+                         }
+ 
+                         override fun onStatusChanged(
+                             provider: String?,
+                             status: Int,
+                             extras: Bundle?,
+                         ) {
+                             Log.i("AA", "1")
+                         }
+ 
+                         override fun onProviderEnabled(provider: String) {
+                             Log.i("AA", "2")
+                         }
+                         override fun onProviderDisabled(provider: String) {
+                             Log.i("AA", "3")
+                         }
+                     }
+                     if (ActivityCompat.checkSelfPermission(
+                             this@LocateActivity,
+                             Manifest.permission.ACCESS_FINE_LOCATION
+                         ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                 this@LocateActivity,
+                                 Manifest.permission.ACCESS_COARSE_LOCATION
+                             ) == PackageManager.PERMISSION_GRANTED
+                     ) {
+                         val locationProvider = LocationManager.GPS_PROVIDER
+                         val lastKnownLocation =
+                             locationManager.getLastKnownLocation(locationProvider)
+                         Log.i("AAA", "AAAA")
+                         if (lastKnownLocation != null) {
+                             val lng = lastKnownLocation.latitude
+                             val lat = lastKnownLocation.latitude
+                             Log.d("Main", "longtitude=$lng, latitude=$lat")
+                         }
+                     }*/
                 }
-                Icon(imageVector = Icons.Outlined.GpsFixed, contentDescription = null)
             }
         }
     }

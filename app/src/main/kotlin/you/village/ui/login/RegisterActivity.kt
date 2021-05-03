@@ -117,6 +117,7 @@ class RegisterActivity : ComponentActivity() {
                                 putExtra("email", email)
                             }
                             startActivity(intent)
+                            finish()
                         } else {
                             toast("모두 입력해 주세요.")
                         }

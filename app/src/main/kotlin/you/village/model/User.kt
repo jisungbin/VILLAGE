@@ -5,13 +5,13 @@ package you.village.model
  */
 
 data class User(
-    val id: String,
-    var password: String,
-    var name: String,
-    var phoneNumber: Long,
-    var locate: String,
-    var profileImageUrl: String,
-    var likeItem: List<Int>,
-    var wrotePost: List<Int>,
-    var uploadItem: List<Int>,
+    val id: String = "",
+    var password: String = "",
+    var name: String = "",
+    var phoneNumber: Long = 0L,
+    var locate: String = "",
+    var profileImageUrl: String = "",
+    var likeItem: List<String> = listOf(),
+    var wrotePost: List<String> = listOf(),
+    var uploadItem: List<String> = listOf(),
 )

@@ -36,7 +36,6 @@ import you.village.theme.typography
 import you.village.ui.BaseActivity
 import you.village.ui.main.MainActivity
 import you.village.ui.widget.RoundedTextField
-import you.village.util.Daum
 import you.village.util.EncryptUtil
 import you.village.util.doDelay
 import you.village.util.fontResource
@@ -112,7 +111,16 @@ class LoginActivity : BaseActivity() {
                             placeholder = "Enter Password"
                         )
                         Button(
-                            onClick = { login(idField.value.text, passwordField.value.text) },
+                            onClick = {
+                                val id = idField.value.text
+                                val password = passwordField.value.text
+
+                                if (id.isNotBlank() && password.isNotBlank()) {
+                                    login(id, password)
+                                } else {
+                                    toast("모두 입력해 주세요.")
+                                }
+                            },
                             modifier = Modifier.padding(top = 16.dp),
                             shape = RoundedCornerShape(15.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
@@ -130,7 +138,7 @@ class LoginActivity : BaseActivity() {
                             modifier = Modifier
                                 .padding(top = 8.dp)
                                 .clickable {
-                                    open(RegisterActivity())
+                                    open(RegisterActivity(), false)
                                 }
                         )
                     }
@@ -139,16 +147,17 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun login(id: String, password: String) {
+    private fun login(id: String, _password: String) {
         firestore
             .collection("users")
             .document(id)
             .get()
             .addOnSuccessListener { user ->
                 user.toObject(User::class.java)?.run {
-                    if (password == EncryptUtil.encrypt(message = password)) {
+                    if (password == EncryptUtil.encrypt(message = _password)) {
                         open(MainActivity())
                         toast("${name}님, 환영합니다 :)")
+                        vm.me = this
                     } else {
                         toast("비밀번호가 일치하지 않습니다.")
                     }

@@ -1,7 +1,6 @@
 package you.village.ui.main
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import you.village.theme.MaterialBind
 import you.village.theme.colors
+import you.village.ui.BaseActivity
 import you.village.ui.main.home.HomeBind
 import you.village.ui.main.model.Main
 import you.village.ui.widget.fancybottombar.FancyBottomBar
@@ -33,7 +33,7 @@ import you.village.ui.widget.fancybottombar.FancyItem
  * Created by Ji Sungbin on 2021/05/03.
  */
 
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 Crossfade(mainState) { state ->
                     when (state) {
-                        Main.Home -> HomeBind(this@MainActivity)
+                        Main.Home -> HomeBind(this@MainActivity, firestore, storage, vm)
                         Main.Category -> CategoryBind()
                         Main.Notification -> NotificationBind()
                         Main.Profile -> ProfileBind()

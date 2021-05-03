@@ -1,7 +1,7 @@
 package you.village.ui.main.home
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,20 +38,48 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.glide.rememberGlidePainter
+import com.nguyenhoanglam.imagepicker.model.Config.CREATOR.ROOT_DIR_DCIM
+import com.nguyenhoanglam.imagepicker.model.Image
+import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
+import you.village.model.Item
 import you.village.theme.MaterialBind
 import you.village.theme.SystemUiController
 import you.village.theme.colors
 import you.village.theme.typography
+import you.village.ui.BaseActivity
 import you.village.ui.widget.RoundedTextField
+import you.village.util.Util
+import you.village.util.toast
+import java.io.File
+import java.util.ArrayList
+import java.util.UUID
+import you.village.util.DataUtil
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
  */
 
-class ItemAddActivity : ComponentActivity() {
+class ItemAddActivity : BaseActivity() {
+
+    private val selectedImages = mutableStateListOf<Image?>(null)
+
+    private val imagePicker by lazy {
+        ImagePicker.with(this)
+            .setFolderMode(true)
+            .setFolderTitle("앨범")
+            .setRootDirectoryName(ROOT_DIR_DCIM)
+            .setDirectoryName("사진 선택")
+            .setMultipleMode(true)
+            .setShowNumberIndicator(true)
+            .setMaxSize(7)
+            .setLimitMessage("최대 7장까지 가능합니다.")
+            .setRequestCode(100)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Util.requestStoragePermission(this)
         SystemUiController(window).setStatusBarColor(colors.primary)
 
         setContent {
@@ -58,6 +87,15 @@ class ItemAddActivity : ComponentActivity() {
                 ItemAddBind()
             }
         }
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (ImagePicker.shouldHandleResult(requestCode, resultCode, data, 100)) {
+            val images: ArrayList<Image> = ImagePicker.getImages(data)
+            selectedImages.addAll(0, images.toMutableList())
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     @Composable
@@ -82,7 +120,6 @@ class ItemAddActivity : ComponentActivity() {
             val itemDescriptionField = remember { mutableStateOf(TextFieldValue()) }
             val itemPriceField = remember { mutableStateOf(TextFieldValue()) }
             val itemRentLengthField = remember { mutableStateOf(TextFieldValue()) }
-            val itemImages = remember { mutableStateListOf("ADD") }
 
             Box(
                 modifier = Modifier
@@ -109,14 +146,15 @@ class ItemAddActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 15.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("대여 비용")
                         RoundedTextField(
                             value = itemPriceField,
                             keyboardType = KeyboardType.Number,
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .width(150.dp)
                                 .padding(start = 10.dp)
                         )
                     }
@@ -124,14 +162,15 @@ class ItemAddActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 15.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("대여 기한")
                         RoundedTextField(
                             value = itemRentLengthField,
                             keyboardType = KeyboardType.Number,
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .width(100.dp)
                                 .padding(start = 10.dp)
                         )
                     }
@@ -145,16 +184,19 @@ class ItemAddActivity : ComponentActivity() {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         items(
-                            items = itemImages,
-                            itemContent = { imageUrl ->
-                                if (imageUrl == "ADD") {
+                            items = selectedImages,
+                            itemContent = { image ->
+                                if (image == null) {
                                     Icon(
                                         imageVector = Icons.Rounded.AddAPhoto,
-                                        contentDescription = null
+                                        contentDescription = null,
+                                        modifier = Modifier.clickable {
+                                            imagePicker.start()
+                                        }
                                     )
                                 } else {
                                     Icon(
-                                        painter = rememberGlidePainter(imageUrl),
+                                        painter = rememberGlidePainter(File(image.path)),
                                         contentDescription = null,
                                         modifier = Modifier.size(150.dp)
                                     )
@@ -181,7 +223,50 @@ class ItemAddActivity : ComponentActivity() {
                             )
                         }
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                val itemName = itemNameField.value.text
+                                val itemDescription = itemDescriptionField.value.text
+                                val itemPrice = itemPriceField.value.text
+                                val itemRentLength = itemRentLengthField.value.text
+
+                                if (
+                                    itemName.isNotBlank() && itemDescription.isNotBlank() &&
+                                    itemPrice.isNotBlank() && itemRentLength.isNotBlank()
+                                ) {
+                                    val id = UUID.randomUUID().toString().replace("-", "")
+                                        .substring(0..10)
+
+                                    selectedImages.forEach { selectedImage ->
+                                        selectedImage?.run {
+                                            storage.reference.child("items/$id/$name").putFile(uri)
+                                        }
+                                    }
+
+                                    val item = Item(
+                                        id = id,
+                                        name = itemName,
+                                        description = itemDescription,
+                                        likeCount = 0,
+                                        price = itemPrice.toLong(),
+                                        rentLength = itemRentLength.toInt(),
+                                        discountPercentage = 0,
+                                        itemScope = 0,
+                                        owner = vm.me,
+                                        uploadDate = 0
+                                    )
+                                    firestore.collection("items").document(id).set(item)
+                                    val newOwnItems = mutableListOf<String>().apply {
+                                        addAll(vm.me.wrotePost)
+                                        add(id)
+                                    }
+                                    vm.me = vm.me.copy(wrotePost = newOwnItems)
+                                    DataUtil.userReUpload(vm.me, firestore)
+                                    toast("등록 되었습니다.")
+                                    finish()
+                                } else {
+                                    toast("모두 입력해 주세요.")
+                                }
+                            },
                             shape = RoundedCornerShape(15.dp),
                             modifier = Modifier
                                 .weight(1f)
