@@ -30,6 +30,10 @@ object Versions {
         const val Gson = "2.8.6"
     }
 
+    object Google {
+        const val Maps = "17.0.0'"
+    }
+
     object Firebase {
         const val Bom = "27.1.0"
     }
@@ -68,6 +72,8 @@ object Dependencies {
         "com.squareup.okhttp3:logging-interceptor:${Versions.Network.OkHttp}",
         "com.squareup.retrofit2:retrofit:${Versions.Network.Retrofit}"
     )
+
+    val Google = listOf("com.google.android.gms:play-services-maps:${Versions.Google.Maps}")
 
     val Essential = listOf(
         "androidx.core:core-ktx:${Versions.Essential.CoreKtx}",

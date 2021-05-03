@@ -1,5 +1,10 @@
 package you.village.ui.login.locate
 
+import android.content.Context
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
@@ -15,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -31,9 +37,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import net.daum.mf.map.api.MapView
 import you.village.R
 import you.village.theme.MaterialBind
 import you.village.theme.typography
@@ -41,8 +50,10 @@ import you.village.ui.BaseActivity
 import you.village.ui.main.MainActivity
 import you.village.ui.widget.RoundedTextField
 import you.village.ui.widget.VerticalSpace
+import you.village.util.Util
 import you.village.util.fontResource
 import you.village.util.open
+import java.util.Locale
 
 /**
  * Created by SungBin on 2021-05-02.
@@ -55,6 +66,10 @@ class LocateActivity : BaseActivity() {
     private lateinit var password: String
     private lateinit var email: String
     private lateinit var phone: String
+
+    private val locationManager by lazy {
+        getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -245,21 +260,59 @@ class LocateActivity : BaseActivity() {
 
     @Composable
     private fun LocateMapBind() {
+        val context = LocalContext.current
+        val map = remember { MapView(context) }
+        Util.checkGpsService(this@LocateActivity)
+        Util.requestGpsPermission(this@LocateActivity)
+
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("지도로 선택하기")
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .width(250.dp)
+                    .wrapContentHeight(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.End
             ) {
-                Spacer(
-                    modifier = Modifier
-                        .size(250.dp)
-                        .background(Color.Cyan)
-                )
+                AndroidView(
+                    factory = { map },
+                    modifier = Modifier.size(250.dp)
+                ) {
+                    var longitude: Double
+                    var latitude: Double
+
+                    val locationListener = object : LocationListener {
+                        override fun onLocationChanged(location: Location) {
+                            longitude = location.longitude
+                            latitude = location.latitude
+
+                            val geoCoder = Geocoder(applicationContext, Locale.KOREA())
+                            val address =
+                                geoCoder.getFromLocation(latitude, longitude, 1).first()
+                                    .getAddressLine(0)
+                        }
+
+                        override fun onStatusChanged(
+                            provider: String?,
+                            status: Int,
+                            extras: Bundle?,
+                        ) {
+                        }
+
+                        override fun onProviderEnabled(provider: String) {}
+                        override fun onProviderDisabled(provider: String) {}
+                    }
+                    locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        1000,
+                        1f,
+                        locationListener
+                    )
+                }
+                Icon(imageVector = Icons.Outlined.GpsFixed, contentDescription = null)
             }
         }
     }
