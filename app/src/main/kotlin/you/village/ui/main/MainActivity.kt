@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.EventNote
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Person
@@ -51,7 +52,8 @@ class MainActivity : BaseActivity() {
             FancyItem(icon = Icons.Outlined.Home, id = 0),
             FancyItem(icon = Icons.Outlined.Category, id = 1),
             FancyItem(icon = Icons.Outlined.Notifications, id = 2),
-            FancyItem(icon = Icons.Outlined.Person, id = 3)
+            FancyItem(icon = Icons.Outlined.EventNote, id = 3),
+            FancyItem(icon = Icons.Outlined.Person, id = 4)
         )
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -65,7 +67,8 @@ class MainActivity : BaseActivity() {
                         Main.Home -> HomeBind(this@MainActivity, firestore, storage, vm)
                         Main.Category -> CategoryBind()
                         Main.Notification -> NotificationBind()
-                        Main.Profile -> ProfileBind()
+                        Main.Calendar -> CalendarBind()
+                        Main.Profile -> ProfileBind(vm)
                     }
                 }
             }
@@ -83,7 +86,8 @@ class MainActivity : BaseActivity() {
                         0 -> mainState = Main.Home
                         1 -> mainState = Main.Category
                         2 -> mainState = Main.Notification
-                        3 -> mainState = Main.Profile
+                        3 -> mainState = Main.Calendar
+                        4 -> mainState = Main.Profile
                     }
                 }
             }

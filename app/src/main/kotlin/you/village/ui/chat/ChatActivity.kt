@@ -163,6 +163,7 @@ class ChatActivity : BaseActivity() {
                                         .getReference("messages/${vm.item.id}")
                                         .push()
                                         .setValue(chat)
+                                    messageField.value = TextFieldValue()
                                 }
                         )
                     }
