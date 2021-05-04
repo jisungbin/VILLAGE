@@ -26,6 +26,7 @@ import you.village.theme.colors
 import you.village.ui.BaseActivity
 import you.village.ui.main.home.HomeBind
 import you.village.ui.main.model.Main
+import you.village.ui.main.schedule.ScheduleBind
 import you.village.ui.widget.fancybottombar.FancyBottomBar
 import you.village.ui.widget.fancybottombar.FancyColors
 import you.village.ui.widget.fancybottombar.FancyItem
@@ -67,7 +68,7 @@ class MainActivity : BaseActivity() {
                         Main.Home -> HomeBind(this@MainActivity, firestore, storage, vm)
                         Main.Category -> CategoryBind()
                         Main.Notification -> NotificationBind()
-                        Main.Calendar -> CalendarBind()
+                        Main.Calendar -> ScheduleBind(vm)
                         Main.Profile -> ProfileBind(vm)
                     }
                 }

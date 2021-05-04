@@ -37,7 +37,7 @@ fun CategoryBind() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(PaddingValues(top = 16.dp, end = 16.dp))
+            .padding(top = 16.dp, end = 16.dp)
     ) {
         LazyRow(
             horizontalArrangement = Arrangement.Center,
