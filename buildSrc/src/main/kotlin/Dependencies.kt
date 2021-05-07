@@ -14,7 +14,7 @@ object Application {
 
 object Versions {
     object Essential {
-        const val Kotlin = "1.4.32"
+        const val Kotlin = "1.5.0"
         const val Gradle = "7.0.0-alpha15"
         const val CoreKtx = "1.3.2"
         const val GoogleServices = "4.3.5"
