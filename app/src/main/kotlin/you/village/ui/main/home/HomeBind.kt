@@ -1,7 +1,6 @@
 package you.village.ui.main.home
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,13 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.glide.rememberGlidePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import you.village.model.Item
 import you.village.theme.colors
+import you.village.ui.widget.GlideImage
 import you.village.ui.widget.RoundedTextField
 import you.village.util.DataUtil
 import you.village.util.open
@@ -146,8 +145,10 @@ private fun ItemBind(
 
     if (imageUrl == null) {
         storage.reference.child("items/${item.id}").listAll().addOnSuccessListener {
-            it.items.first().downloadUrl.addOnSuccessListener { uri ->
-                imageUrl = uri.toString()
+            if (it.items.isNotEmpty()) {
+                it.items.first().downloadUrl.addOnSuccessListener { uri ->
+                    imageUrl = uri.toString()
+                }
             }
         }
     }
@@ -161,6 +162,8 @@ private fun ItemBind(
                 activity.open(DetailView(), false)
             }
             .padding(top = 8.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (imageUrl == null) {
             Image(
@@ -169,12 +172,11 @@ private fun ItemBind(
                 modifier = Modifier.size(50.dp)
             )
         } else {
-            Image(
-                painter = rememberGlidePainter(imageUrl),
-                contentDescription = null,
+            GlideImage(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .height(300.dp),
+                src = imageUrl!!
             )
         }
         Row(

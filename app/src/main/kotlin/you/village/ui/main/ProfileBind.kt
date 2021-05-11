@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import you.village.theme.typography
 import you.village.viewmodel.MainViewModel
@@ -108,7 +109,7 @@ fun ProfileBind(vm: MainViewModel) {
                     contentDescription = null,
                     modifier = Modifier.size(30.dp)
                 )
-                Text(text = "대여 내역 관리", modifier = Modifier.padding(top = 4.dp))
+                Text(text = "대여 내역 관리", modifier = Modifier.padding(top = 4.dp), textAlign = TextAlign.Center)
             }
             Column(
                 modifier = Modifier.size(100.dp),

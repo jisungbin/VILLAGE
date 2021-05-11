@@ -37,23 +37,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.glide.rememberGlidePainter
 import com.nguyenhoanglam.imagepicker.model.Config.CREATOR.ROOT_DIR_DCIM
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
+import java.util.ArrayList
+import java.util.UUID
 import you.village.model.Item
 import you.village.theme.MaterialBind
 import you.village.theme.SystemUiController
 import you.village.theme.colors
 import you.village.theme.typography
 import you.village.ui.BaseActivity
+import you.village.ui.widget.GlideImage
 import you.village.ui.widget.RoundedTextField
+import you.village.util.DataUtil
 import you.village.util.Util
 import you.village.util.toast
-import java.io.File
-import java.util.ArrayList
-import java.util.UUID
-import you.village.util.DataUtil
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
@@ -195,11 +194,7 @@ class ItemAddActivity : BaseActivity() {
                                         }
                                     )
                                 } else {
-                                    Icon(
-                                        painter = rememberGlidePainter(File(image.path)),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(150.dp)
-                                    )
+                                    GlideImage(modifier = Modifier.size(150.dp), src = image.uri)
                                 }
                             }
                         )

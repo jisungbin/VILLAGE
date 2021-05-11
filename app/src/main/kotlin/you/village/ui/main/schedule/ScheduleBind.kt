@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import you.village.model.Item
-import you.village.model.User
 import you.village.viewmodel.MainViewModel
 
 /**
@@ -25,29 +23,30 @@ import you.village.viewmodel.MainViewModel
 @Composable
 fun ScheduleBind(vm: MainViewModel) {
     val context = LocalContext.current
-    val scheduleItems = listOf(
-        Schedule(
-            id = "",
-            owner = vm.me,
-            target = User(),
-            name = "tests",
-            item = Item(name = "TEST1", owner = User(name = "성빈"))
-        ),
-        Schedule(
-            id = "",
-            owner = vm.me,
-            target = User(),
-            name = "tests",
-            item = Item(name = "TEST2", owner = User(name = "성빈2"))
-        ),
-        Schedule(
-            id = "",
-            owner = vm.me,
-            target = User(),
-            name = "tests",
-            item = Item(name = "TEST3", owner = User(name = "성빈3"))
-        )
-    )
+//    val scheduleItems = listOf(
+//        Schedule(
+//            id = "",
+//            owner = vm.me,
+//            target = User(),
+//            name = "tests",
+//            item = Item(name = "TEST1", owner = User(name = "성빈"))
+//        ),
+//        Schedule(
+//            id = "",
+//            owner = vm.me,
+//            target = User(),
+//            name = "tests",
+//            item = Item(name = "TEST2", owner = User(name = "성빈2"))
+//        ),
+//        Schedule(
+//            id = "",
+//            owner = vm.me,
+//            target = User(),
+//            name = "tests",
+//            item = Item(name = "TEST3", owner = User(name = "성빈3"))
+//        )
+//    )
+    val scheduleItems = listOf<Schedule>()
 
     Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
         AndroidView(

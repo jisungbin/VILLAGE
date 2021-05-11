@@ -14,7 +14,7 @@ object Application {
 
 object Versions {
     object Essential {
-        const val Kotlin = "1.5.0"
+        const val Kotlin = "1.4.32"
         const val Gradle = "7.0.0-alpha15"
         const val CoreKtx = "1.3.2"
         const val GoogleServices = "4.3.5"
@@ -22,7 +22,7 @@ object Versions {
 
     object Ui {
         const val Lottie = "1.0.0-alpha07-SNAPSHOT"
-        const val Glide = "0.8.1"
+        const val Glide = "4.12.0"
         const val ImagePicker = "1.4.3"
         const val SwipeRefresh = "0.8.1"
     }
@@ -89,7 +89,7 @@ object Dependencies {
     )
 
     val Ui = listOf(
-        "com.google.accompanist:accompanist-glide:${Versions.Ui.Glide}",
+        "com.github.bumptech.glide:glide:${Versions.Ui.Glide}",
         "com.airbnb.android:lottie-compose:${Versions.Ui.Lottie}",
         "com.github.nguyenhoanglam:ImagePicker:${Versions.Ui.ImagePicker}",
         "com.google.accompanist:accompanist-swiperefresh:${Versions.Ui.SwipeRefresh}"
@@ -116,6 +116,7 @@ object Dependencies {
     )
 
     val Compiler = listOf(
-        "androidx.room:room-compiler:${Versions.Jetpack.Room}"
+        "androidx.room:room-compiler:${Versions.Jetpack.Room}",
+        "com.github.bumptech.glide:compiler:${Versions.Ui.Glide}"
     )
 }

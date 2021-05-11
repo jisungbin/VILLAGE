@@ -37,13 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.glide.rememberGlidePainter
 import you.village.theme.MaterialBind
 import you.village.theme.SystemUiController
 import you.village.theme.colors
 import you.village.theme.typography
 import you.village.ui.BaseActivity
 import you.village.ui.chat.ChatActivity
+import you.village.ui.widget.GlideImage
 import you.village.util.open
 
 /**
@@ -97,6 +97,8 @@ class DetailView : BaseActivity() {
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (imageUrls.first() == null) {
                     Image(
@@ -105,12 +107,11 @@ class DetailView : BaseActivity() {
                         modifier = Modifier.size(50.dp)
                     )
                 } else {
-                    Image(
-                        painter = rememberGlidePainter(imageUrls.first()),
-                        contentDescription = null,
+                    GlideImage(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(300.dp)
+                            .height(300.dp),
+                        src = imageUrls.first()!!
                     )
                 }
                 Row(
@@ -130,10 +131,9 @@ class DetailView : BaseActivity() {
                             items = imageUrls.toList(),
                             itemContent = { url ->
                                 if (url != null && url != imageUrls.first()) {
-                                    Icon(
-                                        painter = rememberGlidePainter(url),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(150.dp)
+                                    GlideImage(
+                                        modifier = Modifier.size(150.dp),
+                                        src = url
                                     )
                                 }
                             }
