@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -28,6 +30,7 @@ fun RoundedTextField(
         onValueChange = { value.value = it },
         singleLine = isSingleLine,
         maxLines = if (isSingleLine) 1 else Int.MAX_VALUE,
+        visualTransformation = if (keyboardType == KeyboardType.Password) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         placeholder = { if (placeholder.isNotBlank()) Text(placeholder) },
         modifier = modifier
