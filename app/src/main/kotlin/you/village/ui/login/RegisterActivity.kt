@@ -107,17 +107,21 @@ class RegisterActivity : ComponentActivity() {
                             password.isNotBlank() && mainEmailField.value.text.isNotBlank() &&
                             subEmailField.value.text.isNotBlank()
                         ) {
-                            val intent = Intent(
-                                this@RegisterActivity,
-                                PhoneNumberVerifyActivity::class.java
-                            ).apply {
-                                putExtra("name", name)
-                                putExtra("id", id)
-                                putExtra("password", password)
-                                putExtra("email", email)
+                            if (id.length > 7 && password.length > 7) {
+                                val intent = Intent(
+                                    this@RegisterActivity,
+                                    PhoneNumberVerifyActivity::class.java
+                                ).apply {
+                                    putExtra("name", name)
+                                    putExtra("id", id)
+                                    putExtra("password", password)
+                                    putExtra("email", email)
+                                }
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                toast("아이디와 비밀번호를 모두 8글자 이상으로 입력해 주세요.")
                             }
-                            startActivity(intent)
-                            finish()
                         } else {
                             toast("모두 입력해 주세요.")
                         }

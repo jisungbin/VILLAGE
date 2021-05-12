@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -99,7 +100,8 @@ class LoginActivity : BaseActivity() {
                         RoundedTextField(
                             value = passwordField,
                             modifier = Modifier.padding(top = 16.dp),
-                            placeholder = "Enter Password"
+                            placeholder = "Enter Password",
+                            keyboardType = KeyboardType.Password
                         )
                         Button(
                             onClick = {
