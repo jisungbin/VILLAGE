@@ -115,7 +115,11 @@ class HomeBind private constructor() {
                             LottieAnimation(
                                 spec = animationSpec,
                                 animationState = animationState,
-                                modifier = Modifier.size(100.dp)
+                                modifier = Modifier.size(250.dp)
+                            )
+                            Text(
+                                text = "올라온 제품이 없어요 :(",
+                                modifier = Modifier.padding(top = 30.dp)
                             )
                         }
                     } else {

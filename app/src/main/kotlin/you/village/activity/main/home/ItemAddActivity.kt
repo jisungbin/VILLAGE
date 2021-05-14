@@ -246,7 +246,9 @@ class ItemAddActivity : ComponentActivity() {
                                                         val doc =
                                                             vm.storage.reference.child("items/$id/$name")
                                                         doc.putFile(uri).addOnSuccessListener {
-                                                            images.add(doc.downloadUrl.result.toString())
+                                                            doc.downloadUrl.addOnSuccessListener { uri ->
+                                                                images.add(uri.toString())
+                                                            }
                                                         }
                                                     }
                                                 }

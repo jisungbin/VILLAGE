@@ -156,7 +156,8 @@ class LocateActivity : ComponentActivity() {
                                 profileImageUrl = "",
                                 likeItem = listOf(),
                                 wrotePost = listOf(),
-                                uploadItem = listOf()
+                                uploadItem = listOf(),
+                                master = false
                             )
                             vm.firestore
                                 .collection("users")
