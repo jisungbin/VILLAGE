@@ -16,13 +16,14 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".Village"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Village">
 
         <activity
-            android:name="you.village.ui.login.LoginActivity"
+            android:name="you.village.activity.login.LoginActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
@@ -32,31 +33,31 @@
         </activity>
 
         <activity
-            android:name=".ui.login.RegisterActivity"
+            android:name=".activity.login.RegisterActivity"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".ui.login.PhoneNumberVerifyActivity"
+            android:name=".activity.login.PhoneNumberVerifyActivity"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.login.locate.LocateActivity"
+            android:name=".activity.login.LocateActivity"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".activity.main.MainActivity"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.main.home.ItemAddActivity"
+            android:name=".activity.main.home.ItemAddActivity"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.main.home.DetailView"
+            android:name=".activity.main.home.DetailView"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".ui.chat.ChatActivity"
+            android:name=".activity.chat.ChatActivity"
             android:windowSoftInputMode="adjustResize"/>
 
         <meta-data
