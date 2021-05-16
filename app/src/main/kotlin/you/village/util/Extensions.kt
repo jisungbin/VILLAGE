@@ -13,10 +13,6 @@ import androidx.annotation.FontRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 fun doDelay(ms: Long, action: () -> Unit) {
     Handler(Looper.getMainLooper()).postDelayed(
@@ -25,18 +21,6 @@ fun doDelay(ms: Long, action: () -> Unit) {
         },
         ms
     )
-}
-
-fun <R> CoroutineScope.executeAsyncTask(
-    onPreExecute: () -> Unit,
-    doInBackground: () -> R,
-    onPostExecute: (R) -> Unit
-) = launch {
-    onPreExecute()
-    val result = withContext(Dispatchers.IO) {
-        doInBackground()
-    }
-    onPostExecute(result)
 }
 
 inline fun <reified T> Activity.open(activity: T, isActivityFinish: Boolean = true) {

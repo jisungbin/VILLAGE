@@ -32,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,8 +42,7 @@ import com.nguyenhoanglam.imagepicker.model.Config.CREATOR.ROOT_DIR_DCIM
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import java.util.ArrayList
-import java.util.UUID
-import you.village.MainViewModel
+import java.util.Date
 import you.village.activity.main.home.model.Item
 import you.village.theme.MaterialBind
 import you.village.theme.SystemUiController
@@ -54,8 +52,8 @@ import you.village.ui.GlideImage
 import you.village.ui.RoundedTextField
 import you.village.util.Database
 import you.village.util.Util
-import you.village.util.executeAsyncTask
 import you.village.util.toast
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
@@ -119,7 +117,6 @@ class ItemAddActivity : ComponentActivity() {
                 )
             }
         ) {
-            val coroutineScope = rememberCoroutineScope()
             val itemNameField = remember { mutableStateOf(TextFieldValue()) }
             val itemDescriptionField = remember { mutableStateOf(TextFieldValue()) }
             val itemPriceField = remember { mutableStateOf(TextFieldValue()) }
@@ -181,9 +178,8 @@ class ItemAddActivity : ComponentActivity() {
                     Text(text = "사진 등록", modifier = Modifier.padding(top = 15.dp))
                     LazyRow(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp)
-                            .padding(top = 8.dp, bottom = 55.dp),
+                            .fillMaxSize()
+                            .padding(top = 8.dp, bottom = 100.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
@@ -204,100 +200,85 @@ class ItemAddActivity : ComponentActivity() {
                             }
                         )
                     }
-                    Row(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalAlignment = Alignment.Bottom
+                }
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    OutlinedButton(
+                        onClick = { /*TODO*/ },
+                        shape = RoundedCornerShape(15.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp)
+                            .padding(end = 15.dp)
                     ) {
-                        OutlinedButton(
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(15.dp),
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(50.dp)
-                                .padding(end = 15.dp)
-                        ) {
-                            Text(
-                                text = "임시저장",
-                                style = typography.button,
-                                color = Color.Black
-                            )
-                        }
-                        Button(
-                            onClick = {
-                                val itemName = itemNameField.value.text
-                                val itemDescription = itemDescriptionField.value.text
-                                val itemPrice = itemPriceField.value.text
-                                val itemRentLength = itemRentLengthField.value.text
+                        Text(
+                            text = "임시저장",
+                            style = typography.button,
+                            color = Color.Black
+                        )
+                    }
+                    Button(
+                        onClick = {
+                            val itemName = itemNameField.value.text
+                            val itemDescription = itemDescriptionField.value.text
+                            val itemPrice = itemPriceField.value.text
+                            val itemRentLength = itemRentLengthField.value.text
 
-                                if (
-                                    itemName.isNotBlank() && itemDescription.isNotBlank() &&
-                                    itemPrice.isNotBlank() && itemRentLength.isNotBlank()
-                                ) {
-                                    if (selectedImages.isNotEmpty()) {
-                                        val id = UUID.randomUUID().toString().replace("-", "")
-                                            .substring(0..10)
+                            if (
+                                itemName.isNotBlank() && itemDescription.isNotBlank() &&
+                                itemPrice.isNotBlank() && itemRentLength.isNotBlank()
+                            ) {
+                                if (selectedImages.size > 1) {
+                                    val uuid = Util.createUuid()
 
-                                        val images: MutableList<String> = mutableListOf()
-                                        coroutineScope.executeAsyncTask(
-                                            onPreExecute = {},
-                                            doInBackground = {
-                                                selectedImages.forEach { selectedImage ->
-                                                    selectedImage?.run {
-                                                        val doc =
-                                                            vm.storage.reference.child("items/$id/$name")
-                                                        doc.putFile(uri).addOnSuccessListener {
-                                                            doc.downloadUrl.addOnSuccessListener { uri ->
-                                                                images.add(uri.toString())
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                images.toList()
-                                            },
-                                            onPostExecute = {
-                                                val item = Item(
-                                                    id = id,
-                                                    name = itemName,
-                                                    description = itemDescription,
-                                                    likeCount = 0,
-                                                    price = itemPrice.toLong(),
-                                                    rentLength = itemRentLength.toInt(),
-                                                    discountPercentage = 0,
-                                                    itemScope = 0,
-                                                    owner = vm.me,
-                                                    uploadDate = 0,
-                                                    images = it
-                                                )
-                                                Database.upload(item)
-                                                val newOwnItems = mutableListOf<String>().apply {
-                                                    addAll(vm.me.wrotePost)
-                                                    add(id)
-                                                }
-                                                vm.me = vm.me.copy(wrotePost = newOwnItems)
-                                                Database.upload(vm.me)
-                                                toast("등록 되었습니다.")
-                                                finish()
-                                            }
-                                        )
-                                    } else {
-                                        toast("최소 이미지를 1장 이상 첨부해 주세요.")
+                                    selectedImages.forEach { selectedImage ->
+                                        if (selectedImage != null) {
+                                            vm.storage.reference
+                                                .child("items/$uuid/${selectedImage.name}")
+                                                .putFile(selectedImage.uri)
+                                        }
                                     }
+
+                                    val item = Item(
+                                        uuid = uuid,
+                                        name = itemName,
+                                        description = itemDescription,
+                                        likeCount = 0,
+                                        price = itemPrice.toLong(),
+                                        rentLength = itemRentLength.toInt(),
+                                        discountPercentage = 0,
+                                        imageNames = selectedImages.filterNotNull().map { it.name },
+                                        ownerUuid = vm.me.uuid,
+                                        uploadDate = Date().time
+                                    )
+
+                                    val newOwnItems = mutableListOf<String>()
+                                    newOwnItems.addAll(vm.me.wrotePost)
+                                    newOwnItems.add(uuid)
+                                    vm.me = vm.me.copy(wrotePost = newOwnItems)
+                                    Database.upload(item)
+                                    toast("등록 되었습니다.")
+                                    finish()
                                 } else {
-                                    toast("모두 입력해 주세요.")
+                                    toast("최소 이미지를 1장 이상 첨부해 주세요.")
                                 }
-                            },
-                            shape = RoundedCornerShape(15.dp),
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(50.dp)
-                                .padding(start = 15.dp)
-                        ) {
-                            Text(
-                                text = "등록하기",
-                                style = typography.button,
-                                color = Color.White
-                            )
-                        }
+                            } else {
+                                toast("모두 입력해 주세요.")
+                            }
+                        },
+                        shape = RoundedCornerShape(15.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp)
+                            .padding(start = 15.dp)
+                    ) {
+                        Text(
+                            text = "등록하기",
+                            style = typography.button,
+                            color = Color.White
+                        )
                     }
                 }
             }

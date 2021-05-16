@@ -16,13 +16,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import you.village.MainViewModel
+import you.village.viewmodel.MainViewModel
 import you.village.theme.colors
 
 /**
@@ -33,14 +35,14 @@ private val vm = MainViewModel.instance
 
 @Composable
 fun CategoryBind() {
-    val categorys = listOf(
+    val categories = listOf(
         Category.None,
         Category.Electronics,
         Category.Computer,
         Category.Book,
         Category.Appliance
     )
-    val focusedCategoryItem = remember { mutableStateOf(categorys.first()) }
+    val focusedCategoryItem = remember { mutableStateOf(categories.first()) }
 
     Column(
         modifier = Modifier
@@ -53,7 +55,7 @@ fun CategoryBind() {
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp)
         ) {
             items(
-                items = categorys,
+                items = categories,
                 itemContent = { category ->
                     fun isItemFocusing() = focusedCategoryItem.value == category
                     val itemFontColor =
@@ -89,7 +91,8 @@ fun CategoryBind() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Crossfade(targetState = focusedCategoryItem.value) { category ->
-                val categoryItems = vm.items.filter { it.category == category }
+                val categoryItems =
+                    vm.items.observeAsState(SnapshotStateList()).value.filter { it.category == category }
             }
         }
     }

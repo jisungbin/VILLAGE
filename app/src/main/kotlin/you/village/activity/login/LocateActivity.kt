@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.MapView
-import you.village.MainViewModel
 import you.village.R
 import you.village.activity.login.model.User
 import you.village.activity.main.MainActivity
@@ -46,11 +45,14 @@ import you.village.theme.MaterialBind
 import you.village.theme.typography
 import you.village.ui.RoundedTextField
 import you.village.ui.VerticalSpace
+import you.village.util.Database
 import you.village.util.EncryptUtil
+import you.village.util.IntentKey
 import you.village.util.Util
 import you.village.util.fontResource
 import you.village.util.open
 import you.village.util.toast
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by SungBin on 2021-05-02.
@@ -81,11 +83,11 @@ class LocateActivity : ComponentActivity() {
         Util.requestGpsPermission(this)
 
         intent.run {
-            name = getStringExtra("name")!!
-            id = getStringExtra("id")!!
-            password = getStringExtra("password")!!
-            email = getStringExtra("email")!!
-            phoneNumber = getStringExtra("phone")!!
+            name = getStringExtra(IntentKey.Name)!!
+            id = getStringExtra(IntentKey.Id)!!
+            password = getStringExtra(IntentKey.Password)!!
+            email = getStringExtra(IntentKey.Email)!!
+            phoneNumber = getStringExtra(IntentKey.Phone)!!
         }
 
         setContent {
@@ -148,6 +150,7 @@ class LocateActivity : ComponentActivity() {
                     Button(
                         onClick = {
                             val user = User(
+                                uuid = Util.createUuid(),
                                 id = id,
                                 password = EncryptUtil.encrypt(message = password),
                                 name = name,
@@ -159,10 +162,7 @@ class LocateActivity : ComponentActivity() {
                                 uploadItem = listOf(),
                                 master = false
                             )
-                            vm.firestore
-                                .collection("users")
-                                .document(id)
-                                .set(user)
+                            Database.upload(user)
                             toast("환영합니다!")
                             open(MainActivity())
                             vm.me = user

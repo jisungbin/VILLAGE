@@ -44,17 +44,13 @@
             android:name=".activity.login.LocateActivity"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name=".activity.main.MainActivity"
-            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.main.MainActivity"  />
 
         <activity
             android:name=".activity.main.home.ItemAddActivity"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name=".activity.main.home.DetailView"
             android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".activity.main.home.DetailView" />
 
         <activity
             android:name=".activity.chat.ChatActivity"

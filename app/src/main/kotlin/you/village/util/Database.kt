@@ -1,8 +1,8 @@
 package you.village.util
 
-import you.village.MainViewModel
 import you.village.activity.login.model.User
 import you.village.activity.main.home.model.Item
+import you.village.viewmodel.MainViewModel
 
 object Database {
     private val vm = MainViewModel.instance
@@ -19,15 +19,23 @@ object Database {
 
     fun <T> upload(value: T) {
         when (value) {
-            is Item -> vm.firestore.collection("items").document(value.id).set(value)
-            is User -> vm.firestore.collection("users").document(value.id).set(value)
+            is Item -> {
+                vm.firestore.collection("items").document(value.uuid).set(value)
+                vm.addItem(value)
+            }
+            is User -> {
+                vm.firestore.collection("users").document(value.id).set(value)
+                vm.addUser(value)
+            }
         }
     }
 
     fun <T> remove(value: T) {
         when (value) {
-            is Item -> vm.firestore.collection("items").document(value.id).delete()
-            is User -> vm.firestore.collection("users").document(value.id).delete()
+            is Item -> {
+                vm.firestore.collection("items").document(value.uuid).delete()
+                vm.removeItem(value)
+            }
         }
     }
 
@@ -38,6 +46,22 @@ object Database {
             }
         }
 
+        loadItems()
+    }
+
+    fun requestImageUrls(uuid: String) {
+        if (vm.getImageUrlsFromUuid(uuid).value!!.isEmpty()) {
+            vm.storage.reference.child("items/$uuid").listAll().addOnSuccessListener {
+                it.items.forEach { task ->
+                    task.downloadUrl.addOnSuccessListener { uri ->
+                        vm.addDownloadUrlToUuid(uuid, uri.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    fun loadItems() {
         vm.firestore.collection("items").get().addOnSuccessListener {
             it.toObjects(Item::class.java).forEach { item ->
                 vm.addItem(item)

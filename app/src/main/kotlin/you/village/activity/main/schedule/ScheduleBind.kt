@@ -14,7 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import you.village.MainViewModel
+import you.village.viewmodel.MainViewModel
+import you.village.activity.main.schedule.model.Schedule
 
 /**
  * Created by Ji Sungbin on 2021/05/03.

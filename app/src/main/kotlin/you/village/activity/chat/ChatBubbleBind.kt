@@ -29,17 +29,17 @@ import you.village.theme.colors
 
 @Composable
 fun ChatBubbleBind(chat: Chat, me: User) {
-    fun isMyChat() = chat.owner.id == me.id
+    val isMyChat = chat.ownerUuid == me.uuid
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-        horizontalArrangement = if (!isMyChat()) Arrangement.Start else Arrangement.End,
+        horizontalArrangement = if (!isMyChat) Arrangement.Start else Arrangement.End,
         verticalAlignment = Alignment.Bottom
     ) {
-        if (!isMyChat()) {
+        if (!isMyChat) {
             val shape = RoundedCornerShape(
                 topStart = 10.dp,
                 topEnd = 10.dp,

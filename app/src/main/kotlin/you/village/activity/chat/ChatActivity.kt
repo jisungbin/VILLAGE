@@ -35,14 +35,15 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import you.village.MainViewModel
+import java.util.Date
 import you.village.activity.chat.model.Chat
 import you.village.activity.login.model.User
 import you.village.activity.main.home.model.Item
 import you.village.theme.MaterialBind
 import you.village.theme.SystemUiController
 import you.village.theme.colors
-import java.util.Date
+import you.village.util.IntentKey
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
@@ -58,9 +59,9 @@ class ChatActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         SystemUiController(window).setStatusBarColor(colors.primary)
-        val itemId = intent.getStringExtra("itemId")!!
-        item = vm.getItemFromId(itemId)
-        target = vm.getUserFromId(item.owner.id)
+        val itemUuid = intent.getStringExtra(IntentKey.ItemUuid)!!
+        item = vm.getItemFromUuid(itemUuid)
+        target = vm.getUserFromUuid(item.ownerUuid)
 
         setContent {
             MaterialBind {
@@ -77,7 +78,7 @@ class ChatActivity : ComponentActivity() {
                     elevation = 0.dp,
                     backgroundColor = colors.primary,
                     title = {
-                        Text("${if (item.owner.id == vm.me.id) target.name else vm.me.name} 님과의 채팅")
+                        Text("${if (item.ownerUuid == vm.me.uuid) target.name else vm.me.name} 님과의 채팅")
                     },
                     navigationIcon = {
                         Icon(
@@ -93,7 +94,7 @@ class ChatActivity : ComponentActivity() {
             val chatItems = mutableStateListOf<Chat>()
 
             vm.database
-                .getReference("messages/${item.id}")
+                .getReference("messages/${item.uuid}")
                 .addChildEventListener(object : ChildEventListener {
                     override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                         chatItems.add(snapshot.getValue(Chat::class.java)!!)
@@ -163,15 +164,15 @@ class ChatActivity : ComponentActivity() {
                                 .size(50.dp)
                                 .clickable {
                                     val chat = Chat(
-                                        id = item.id,
-                                        target = target,
-                                        owner = vm.me,
+                                        uuid = item.uuid,
+                                        targetUuid = target.uuid,
+                                        ownerUuid = vm.me.uuid,
                                         message = messageField.value.text,
                                         time = Date().time,
                                         attachment = null
                                     )
                                     vm.database
-                                        .getReference("messages/${item.id}")
+                                        .getReference("messages/${item.uuid}")
                                         .push()
                                         .setValue(chat)
                                     messageField.value = TextFieldValue()

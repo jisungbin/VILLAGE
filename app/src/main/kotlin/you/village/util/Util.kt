@@ -9,8 +9,12 @@ import android.location.LocationManager
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
+import java.util.UUID
 
 object Util {
+    fun createUuid() = UUID.randomUUID().toString().replace("-", "")
+        .substring(0..10)
+
     fun checkGpsService(activity: Activity) {
         val manager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {

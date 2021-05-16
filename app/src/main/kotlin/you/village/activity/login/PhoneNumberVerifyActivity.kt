@@ -36,15 +36,16 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import you.village.MainViewModel
+import java.util.concurrent.TimeUnit
 import you.village.R
 import you.village.theme.MaterialBind
 import you.village.theme.typography
 import you.village.ui.RoundedTextField
 import you.village.ui.VerticalSpace
+import you.village.util.IntentKey
 import you.village.util.fontResource
 import you.village.util.toast
-import java.util.concurrent.TimeUnit
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by SungBin on 2021-05-02.
@@ -62,10 +63,10 @@ class PhoneNumberVerifyActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         intent.run {
-            name = getStringExtra("name")!!
-            id = getStringExtra("id")!!
-            password = getStringExtra("password")!!
-            email = getStringExtra("email")!!
+            name = getStringExtra(IntentKey.Name)!!
+            id = getStringExtra(IntentKey.Id)!!
+            password = getStringExtra(IntentKey.Password)!!
+            email = getStringExtra(IntentKey.Email)!!
         }
 
         setContent {
@@ -209,11 +210,11 @@ class PhoneNumberVerifyActivity : ComponentActivity() {
                                     this@PhoneNumberVerifyActivity,
                                     LocateActivity::class.java
                                 ).apply {
-                                    putExtra("name", name)
-                                    putExtra("id", id)
-                                    putExtra("password", password)
-                                    putExtra("email", email)
-                                    putExtra("phone", phoneNumber)
+                                    putExtra(IntentKey.Name, name)
+                                    putExtra(IntentKey.Id, id)
+                                    putExtra(IntentKey.Password, password)
+                                    putExtra(IntentKey.Email, email)
+                                    putExtra(IntentKey.Phone, phoneNumber)
                                 }
                                 startActivity(intent)
                                 finish()

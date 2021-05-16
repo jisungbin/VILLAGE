@@ -5,6 +5,7 @@ package you.village.activity.login.model
  */
 
 data class User(
+    val uuid: String = "",
     val id: String = "",
     var password: String = "",
     var name: String = "",

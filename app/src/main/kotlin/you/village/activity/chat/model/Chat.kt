@@ -1,13 +1,10 @@
 package you.village.activity.chat.model
 
-import you.village.activity.login.model.User
-import java.util.Date
-
 data class Chat(
-    val id: String = "",
-    val target: User = User(),
-    val owner: User = User(),
+    val uuid: String = "",
+    val targetUuid: String = "",
+    val ownerUuid: String = "",
     val message: String = "",
-    val time: Long = Date().time,
+    val time: Long = 0L,
     val attachment: Attachment? = null
 )

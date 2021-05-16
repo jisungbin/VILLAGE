@@ -28,7 +28,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import you.village.MainViewModel
 import you.village.R
 import you.village.activity.main.MainActivity
 import you.village.theme.MaterialBind
@@ -40,6 +39,7 @@ import you.village.util.doDelay
 import you.village.util.fontResource
 import you.village.util.open
 import you.village.util.toast
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by SungBin on 2021-05-02.

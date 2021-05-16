@@ -36,6 +36,7 @@ import you.village.theme.MaterialBind
 import you.village.theme.typography
 import you.village.ui.RoundedTextField
 import you.village.ui.VerticalSpace
+import you.village.util.IntentKey
 import you.village.util.fontResource
 import you.village.util.toast
 
@@ -112,10 +113,10 @@ class RegisterActivity : ComponentActivity() {
                                     this@RegisterActivity,
                                     PhoneNumberVerifyActivity::class.java
                                 ).apply {
-                                    putExtra("name", name)
-                                    putExtra("id", id)
-                                    putExtra("password", password)
-                                    putExtra("email", email)
+                                    putExtra(IntentKey.Name, name)
+                                    putExtra(IntentKey.Id, id)
+                                    putExtra(IntentKey.Password, password)
+                                    putExtra(IntentKey.Email, email)
                                 }
                                 startActivity(intent)
                                 finish()

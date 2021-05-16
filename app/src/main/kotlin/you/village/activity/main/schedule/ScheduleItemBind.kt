@@ -31,7 +31,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import you.village.MainViewModel
+import you.village.activity.main.schedule.model.Schedule
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by Ji Sungbin on 2021/05/04.
@@ -42,6 +43,7 @@ private val vm = MainViewModel.instance
 @Composable
 fun ScheduleItemBind(schedule: Schedule) {
     var isNotificationOn by remember { mutableStateOf(true) }
+    val owner = vm.getUserFromUuid(schedule.item.ownerUuid)
 
     Box(
         modifier = Modifier
@@ -75,7 +77,7 @@ fun ScheduleItemBind(schedule: Schedule) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(schedule.name)
-                Text("${schedule.item.owner.name} 님의 상품")
+                Text("${owner.name} 님의 상품")
             }
         }
         Row(

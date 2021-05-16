@@ -33,12 +33,17 @@ import you.village.theme.colors
 import you.village.ui.fancybottombar.FancyBottomBar
 import you.village.ui.fancybottombar.FancyColors
 import you.village.ui.fancybottombar.FancyItem
+import you.village.util.Database
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
  */
 
 class MainActivity : ComponentActivity() {
+
+    private val vm = MainViewModel.instance
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,7 +73,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 Crossfade(mainState) { state ->
                     when (state) {
-                        Main.Home -> HomeBind.instance.Bind(this@MainActivity)
+                        Main.Home -> HomeBind(this@MainActivity)
                         Main.Category -> CategoryBind()
                         Main.Notification -> NotificationBind()
                         Main.Calendar -> ScheduleBind()
@@ -100,6 +105,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        HomeBind.instance.destroyListener.onDestroyActivity()
+        Database.upload(vm.me)
     }
 }
