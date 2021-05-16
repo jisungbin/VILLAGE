@@ -9,3 +9,4 @@ captures
 .cxx
 buildSrc/build
 /app/google-services.json
+/debug.apk
