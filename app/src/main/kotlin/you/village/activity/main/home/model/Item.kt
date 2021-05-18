@@ -1,7 +1,7 @@
 package you.village.activity.main.home.model
 
-import java.util.Date
 import you.village.activity.main.category.Category
+import java.util.Date
 
 /**
  * Created by Ji Sungbin on 2021/05/03.

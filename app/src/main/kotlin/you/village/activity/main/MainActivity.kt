@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                 Crossfade(mainState) { state ->
                     when (state) {
                         Main.Home -> HomeBind(this@MainActivity)
-                        Main.Category -> CategoryBind()
+                        Main.Category -> CategoryBind(this@MainActivity)
                         Main.Notification -> NotificationBind()
                         Main.Calendar -> ScheduleBind()
                         Main.Profile -> ProfileBind()

@@ -10,28 +10,35 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.rounded.AddAPhoto
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +50,7 @@ import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import java.util.ArrayList
 import java.util.Date
+import you.village.activity.main.category.Category
 import you.village.activity.main.home.model.Item
 import you.village.theme.MaterialBind
 import you.village.theme.SystemUiController
@@ -63,6 +71,15 @@ class ItemAddActivity : ComponentActivity() {
 
     private val vm = MainViewModel.instance
     private val selectedImages = mutableStateListOf<Image?>(null)
+    private var categoryMenuExpend by mutableStateOf(false)
+    private var selectedCategory by mutableStateOf(Category.None)
+    private val categories = listOf(
+        Category.None,
+        Category.Electronics,
+        Category.Computer,
+        Category.Book,
+        Category.Appliance
+    )
 
     private val imagePicker by lazy {
         ImagePicker.with(this)
@@ -86,6 +103,7 @@ class ItemAddActivity : ComponentActivity() {
         setContent {
             MaterialBind {
                 ItemAddBind()
+                BindCategoryMenu()
             }
         }
     }
@@ -106,7 +124,29 @@ class ItemAddActivity : ComponentActivity() {
                 TopAppBar(
                     elevation = 0.dp,
                     backgroundColor = colors.primary,
-                    title = { Text("대여 상품 등록") },
+                    title = {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(text = "대여 상품 등록")
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .wrapContentWidth()
+                                    .clickable {
+                                        categoryMenuExpend = true
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(selectedCategory)
+                                Icon(
+                                    imageVector = Icons.Default.ArrowDropDown,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    },
                     navigationIcon = {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
@@ -254,7 +294,8 @@ class ItemAddActivity : ComponentActivity() {
                                         discountPercentage = 0,
                                         imageNames = selectedImages.filterNotNull().map { it.name },
                                         ownerUuid = vm.me.uuid,
-                                        uploadDate = Date().time
+                                        uploadDate = Date().time,
+                                        category = selectedCategory
                                     )
 
                                     val newOwnItems = mutableListOf<String>()
@@ -283,6 +324,25 @@ class ItemAddActivity : ComponentActivity() {
                             color = Color.White
                         )
                     }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun BindCategoryMenu() {
+        DropdownMenu(
+            expanded = categoryMenuExpend,
+            onDismissRequest = { categoryMenuExpend = false },
+        ) {
+            categories.forEach { category ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedCategory = category
+                        categoryMenuExpend = false
+                    }
+                ) {
+                    Text(category)
                 }
             }
         }
