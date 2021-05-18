@@ -238,6 +238,9 @@ class ItemAddActivity : ComponentActivity() {
                                             vm.storage.reference
                                                 .child("items/$uuid/${selectedImage.name}")
                                                 .putFile(selectedImage.uri)
+                                                .addOnCompleteListener {
+                                                    Database.requestImageUrls(uuid)
+                                                }
                                         }
                                     }
 

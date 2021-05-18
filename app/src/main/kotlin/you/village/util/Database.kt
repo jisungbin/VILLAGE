@@ -65,6 +65,7 @@ object Database {
         vm.firestore.collection("items").get().addOnSuccessListener {
             it.toObjects(Item::class.java).forEach { item ->
                 vm.addItem(item)
+                requestImageUrls(item.uuid)
             }
         }
     }

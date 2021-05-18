@@ -56,10 +56,6 @@
             android:name=".activity.chat.ChatActivity"
             android:windowSoftInputMode="adjustResize"/>
 
-        <meta-data
-            android:name="com.samsung.android.icon_container.has_icon_container"
-            android:value="true" />
-
     </application>
 
 </manifest>

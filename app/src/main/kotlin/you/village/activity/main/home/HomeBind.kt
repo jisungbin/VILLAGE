@@ -146,7 +146,6 @@ fun HomeBind(activity: Activity) {
 
 @Composable
 private fun ItemBind(activity: Activity, item: Item) {
-    Database.requestImageUrls(item.uuid)
     var likeState by remember { mutableStateOf(vm.me.likeItem.contains(item.uuid)) }
     val imageUrls = vm.getImageUrlsFromUuid(item.uuid).observeAsState(SnapshotStateList())
 

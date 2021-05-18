@@ -10,9 +10,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import java.util.HashMap
 import you.village.activity.login.model.User
 import you.village.activity.main.home.model.Item
+import java.util.HashMap
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
@@ -23,7 +23,9 @@ class MainViewModel private constructor() : ViewModel() {
     private val _users: MutableList<User> = mutableListOf()
     private val _imageUrls: HashMap<String, MutableLiveData<SnapshotStateList<String>>> =
         hashMapOf()
-    private val _items: MutableLiveData<SnapshotStateList<Item>> = MutableLiveData()
+    private val _items = MutableLiveData<SnapshotStateList<Item>>().apply {
+        value = SnapshotStateList()
+    }
     val firestore = Firebase.firestore
     val database = Firebase.database
     val storage = Firebase.storage
@@ -54,6 +56,7 @@ class MainViewModel private constructor() : ViewModel() {
 
     fun addDownloadUrlToUuid(uuid: String, url: String) {
         val value = getImageUrlsFromUuid(uuid)
+        value.value!!.removeIf { it == url }
         value.value!!.add(url)
         getDownloadUrlsFromUuidAsMutable(uuid).postValue(value.value!!)
     }
