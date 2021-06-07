@@ -3,41 +3,21 @@ package you.village.activity.login
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.GpsFixed
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.maps.MapView
 import you.village.R
 import you.village.activity.login.model.User
 import you.village.activity.main.MainActivity
@@ -45,13 +25,7 @@ import you.village.theme.MaterialBind
 import you.village.theme.typography
 import you.village.ui.RoundedTextField
 import you.village.ui.VerticalSpace
-import you.village.util.Database
-import you.village.util.EncryptUtil
-import you.village.util.IntentKey
-import you.village.util.Util
-import you.village.util.fontResource
-import you.village.util.open
-import you.village.util.toast
+import you.village.util.*
 import you.village.viewmodel.MainViewModel
 
 /**
@@ -74,13 +48,8 @@ class LocateActivity : ComponentActivity() {
     private val zipCodeField = mutableStateOf(TextFieldValue())
     private val addressField = mutableStateOf(TextFieldValue())
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Util.checkGpsService(this)
-        Util.requestGpsPermission(this)
 
         intent.run {
             name = getStringExtra(IntentKey.Name)!!
@@ -120,13 +89,7 @@ class LocateActivity : ComponentActivity() {
                     )
                 }
                 VerticalSpace(height = 30.dp)
-                Crossfade(locatePickState.value) { state ->
-                    when (state) {
-                        null -> LocatePickerBind(locatePickState)
-                        LocatePick.Input -> LocateInputBind()
-                        LocatePick.Map -> LocateMapBind()
-                    }
-                }
+                LocateInputBind()
             }
             if (locatePickState.value != null) {
                 Row(
@@ -177,46 +140,6 @@ class LocateActivity : ComponentActivity() {
                             fontFamily = fontResource(font = R.font.righteous)
                         )
                     }
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun LocatePickerBind(locatePickState: MutableState<LocatePick?>) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(bottom = 15.dp)
-                    .clickable { locatePickState.value = LocatePick.Input }
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .size(150.dp)
-                        .background(Color.Cyan)
-                )
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-                    Text("주소 직접 입력")
-                }
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(top = 15.dp)
-                    .clickable { locatePickState.value = LocatePick.Map }
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .size(150.dp)
-                        .background(Color.Cyan)
-                )
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-                    Text("지도로 선택")
                 }
             }
         }
@@ -277,30 +200,6 @@ class LocateActivity : ComponentActivity() {
                         modifier = Modifier.size(50.dp)
                     )
                 }
-            }
-        }
-    }
-
-    @Composable
-    private fun LocateMapBind() {
-        val context = LocalContext.current
-        val map = remember { MapView(context) }
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("지도로 선택하기")
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .size(250.dp)
-                        .background(Color.Cyan)
-                )
             }
         }
     }

@@ -1,7 +1,6 @@
 package you.village.util
 
 object IntentKey {
-    const val UserUuid = "UserUuid"
     const val ItemUuid = "ItemUuid"
 
     const val Name = "Name"

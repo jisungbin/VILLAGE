@@ -1,27 +1,13 @@
 package you.village.activity.main.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Article
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.SupervisorAccount
-import androidx.compose.material.icons.outlined.Try
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import you.village.viewmodel.MainViewModel
 import you.village.theme.typography
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by Ji Sungbin on 2021/05/03.

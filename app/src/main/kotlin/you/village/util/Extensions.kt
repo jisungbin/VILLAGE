@@ -15,12 +15,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 
 fun doDelay(ms: Long, action: () -> Unit) {
-    Handler(Looper.getMainLooper()).postDelayed(
-        {
-            action()
-        },
-        ms
-    )
+    Handler(Looper.getMainLooper()).postDelayed({ action() }, ms)
 }
 
 inline fun <reified T> Activity.open(activity: T, isActivityFinish: Boolean = true) {

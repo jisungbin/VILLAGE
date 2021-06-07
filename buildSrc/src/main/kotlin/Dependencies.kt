@@ -8,14 +8,14 @@ object Application {
     const val jvmTarget = "1.8"
     const val versionName = "1.0.0"
 
-    val targetCompat = JavaVersion.VERSION_1_8
-    val sourceCompat = JavaVersion.VERSION_1_8
+    val targetCompat = JavaVersion.VERSION_11
+    val sourceCompat = JavaVersion.VERSION_11
 }
 
 object Versions {
     object Essential {
         const val Kotlin = "1.4.32"
-        const val Gradle = "7.0.0-alpha15"
+        const val Gradle = "7.1.0-alpha01"
         const val CoreKtx = "1.3.2"
         const val GoogleServices = "4.3.5"
     }

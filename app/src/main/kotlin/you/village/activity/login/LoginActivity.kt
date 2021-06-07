@@ -6,20 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,12 +25,7 @@ import you.village.activity.main.MainActivity
 import you.village.theme.MaterialBind
 import you.village.theme.typography
 import you.village.ui.RoundedTextField
-import you.village.util.Database
-import you.village.util.EncryptUtil
-import you.village.util.doDelay
-import you.village.util.fontResource
-import you.village.util.open
-import you.village.util.toast
+import you.village.util.*
 import you.village.viewmodel.MainViewModel
 
 /**

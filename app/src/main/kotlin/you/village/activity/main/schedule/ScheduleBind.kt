@@ -1,11 +1,7 @@
 package you.village.activity.main.schedule
 
 import android.widget.CalendarView
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -14,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import you.village.viewmodel.MainViewModel
 import you.village.activity.main.schedule.model.Schedule
+import you.village.viewmodel.MainViewModel
 
 /**
  * Created by Ji Sungbin on 2021/05/03.
@@ -51,7 +47,9 @@ fun ScheduleBind() {
 //    )
     val scheduleItems = listOf<Schedule>()
 
-    Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
         AndroidView(
             factory = { CalendarView(context) },
             modifier = Modifier
@@ -65,7 +63,9 @@ fun ScheduleBind() {
                 .fillMaxWidth()
         ) {
             Text(text = "다가오는 일정")
-            LazyColumn(modifier = Modifier.padding(top = 8.dp).fillMaxSize()) {
+            LazyColumn(modifier = Modifier
+                .padding(top = 8.dp)
+                .fillMaxSize()) {
                 items(items = scheduleItems, itemContent = { ScheduleItemBind(it) })
             }
         }
