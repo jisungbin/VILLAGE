@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="you.village">
+    package="change.village">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,14 +16,14 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".Village"
+        android:name="change.village.Village"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Village">
 
         <activity
-            android:name="you.village.activity.login.LoginActivity"
+            android:name="change.village.activity.login.LoginActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
@@ -33,27 +33,27 @@
         </activity>
 
         <activity
-            android:name=".activity.login.RegisterActivity"
+            android:name="change.village.activity.login.RegisterActivity"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".activity.login.PhoneNumberVerifyActivity"
+            android:name="change.village.activity.login.PhoneNumberVerifyActivity"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".activity.login.LocateActivity"
+            android:name="change.village.activity.login.LocateActivity"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".activity.main.MainActivity"  />
+        <activity android:name="change.village.activity.main.MainActivity"  />
 
         <activity
-            android:name=".activity.main.home.ItemAddActivity"
+            android:name="change.village.activity.main.home.ItemAddActivity"
             android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".activity.main.home.DetailView" />
+        <activity android:name="change.village.activity.main.home.DetailView" />
 
         <activity
-            android:name=".activity.chat.ChatActivity"
+            android:name="change.village.activity.chat.ChatActivity"
             android:windowSoftInputMode="adjustResize"/>
 
     </application>
