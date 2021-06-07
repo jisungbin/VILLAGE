@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "487635608590",
+    "project_id": "village-a95b3",
+    "storage_bucket": "village-a95b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487635608590:android:07430dc870075f2ed0885f",
+        "android_client_info": {
+          "package_name": "change.village"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487635608590-uclgin8s15fgjmto8s1s06k3sn9v8mlo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnehzFlNV9qd9j7mRjmSWjk1ZgSdcJUp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487635608590-uclgin8s15fgjmto8s1s06k3sn9v8mlo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
