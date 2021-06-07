@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.GpsFixed
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,11 +31,6 @@ import change.village.viewmodel.MainViewModel
  */
 
 class LocateActivity : ComponentActivity() {
-
-    private sealed class LocatePick {
-        object Input : LocatePick()
-        object Map : LocatePick()
-    }
 
     private val vm = MainViewModel.instance
     private lateinit var name: String
@@ -68,8 +61,6 @@ class LocateActivity : ComponentActivity() {
 
     @Composable
     private fun LocateBind() {
-        val locatePickState = remember { mutableStateOf<LocatePick?>(null) }
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -91,55 +82,40 @@ class LocateActivity : ComponentActivity() {
                 VerticalSpace(height = 30.dp)
                 LocateInputBind()
             }
-            if (locatePickState.value != null) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.End
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = {
+                        val user = User(
+                            uuid = Util.createUuid(),
+                            id = id,
+                            password = EncryptUtil.encrypt(message = password),
+                            name = name,
+                            phoneNumber = phoneNumber.toLong(),
+                            locate = "${addressField.value.text} (우편: ${zipCodeField.value.text})",
+                            profileImageUrl = "",
+                            likeItem = listOf(),
+                            wrotePost = listOf(),
+                            uploadItem = listOf(),
+                            master = false
+                        )
+                        Database.upload(user)
+                        toast("환영합니다!")
+                        open(MainActivity())
+                        vm.me = user
+                    },
+                    shape = RoundedCornerShape(15.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
                 ) {
-                    Button(
-                        onClick = { locatePickState.value = null },
-                        modifier = Modifier.padding(end = 10.dp),
-                        shape = RoundedCornerShape(15.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
-                    ) {
-                        Text(
-                            text = "Back",
-                            style = typography.button,
-                            color = Color.White,
-                            fontFamily = fontResource(font = R.font.righteous)
-                        )
-                    }
-                    Button(
-                        onClick = {
-                            val user = User(
-                                uuid = Util.createUuid(),
-                                id = id,
-                                password = EncryptUtil.encrypt(message = password),
-                                name = name,
-                                phoneNumber = phoneNumber.toLong(),
-                                locate = "${addressField.value.text} (우편: ${zipCodeField.value.text})",
-                                profileImageUrl = "",
-                                likeItem = listOf(),
-                                wrotePost = listOf(),
-                                uploadItem = listOf(),
-                                master = false
-                            )
-                            Database.upload(user)
-                            toast("환영합니다!")
-                            open(MainActivity())
-                            vm.me = user
-                        },
-                        shape = RoundedCornerShape(15.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
-                    ) {
-                        Text(
-                            text = "Done",
-                            style = typography.button,
-                            color = Color.White,
-                            fontFamily = fontResource(font = R.font.righteous)
-                        )
-                    }
+                    Text(
+                        text = "Done",
+                        style = typography.button,
+                        color = Color.White,
+                        fontFamily = fontResource(font = R.font.righteous)
+                    )
                 }
             }
         }
@@ -186,18 +162,6 @@ class LocateActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 10.dp)
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.GpsFixed,
-                        contentDescription = null,
-                        modifier = Modifier.size(50.dp)
                     )
                 }
             }
