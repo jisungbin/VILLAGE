@@ -36,10 +36,6 @@
             android:name="change.village.activity.login.PhoneNumberVerifyActivity"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name="change.village.activity.login.LocateActivity"
-            android:windowSoftInputMode="adjustResize" />
-
         <activity android:name="change.village.activity.main.MainActivity"  />
 
         <activity

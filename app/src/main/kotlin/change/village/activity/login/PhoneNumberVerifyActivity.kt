@@ -1,6 +1,5 @@
 package change.village.activity.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -20,19 +19,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.firebase.FirebaseException
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
 import change.village.R
+import change.village.activity.login.model.User
+import change.village.activity.main.MainActivity
 import change.village.theme.MaterialBind
 import change.village.theme.typography
 import change.village.ui.RoundedTextField
 import change.village.ui.VerticalSpace
-import change.village.util.IntentKey
-import change.village.util.fontResource
-import change.village.util.toast
+import change.village.util.*
 import change.village.viewmodel.MainViewModel
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import java.util.concurrent.TimeUnit
 
 /**
@@ -194,18 +193,23 @@ class PhoneNumberVerifyActivity : ComponentActivity() {
 
                         if (isCodeVerified) {
                             if (phoneNumber.isNotBlank()) {
-                                val intent = Intent(
-                                    this@PhoneNumberVerifyActivity,
-                                    LocateActivity::class.java
-                                ).apply {
-                                    putExtra(IntentKey.Name, name)
-                                    putExtra(IntentKey.Id, id)
-                                    putExtra(IntentKey.Password, password)
-                                    putExtra(IntentKey.Email, email)
-                                    putExtra(IntentKey.Phone, phoneNumber)
-                                }
-                                startActivity(intent)
-                                finish()
+                                val user = User(
+                                    uuid = Util.createUuid(),
+                                    id = id,
+                                    password = EncryptUtil.encrypt(message = password),
+                                    name = name,
+                                    phoneNumber = phoneNumber.toLong(),
+                                    locate = "",
+                                    profileImageUrl = "",
+                                    likeItem = listOf(),
+                                    wrotePost = listOf(),
+                                    uploadItem = listOf(),
+                                    master = false
+                                )
+                                Database.upload(user)
+                                toast("환영합니다!")
+                                open(MainActivity())
+                                vm.me = user
                             } else {
                                 toast("모두 입력해 주세요.")
                             }
